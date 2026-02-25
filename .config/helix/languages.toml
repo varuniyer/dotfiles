@@ -1,0 +1,33 @@
+[language-server.clangd]
+command = "clangd"
+args = ["--enable-config"]
+
+[language-server.pyrefly]
+command = "pyrefly"
+args = ["lsp", "-j", "24"]
+
+[language-server.ruff]
+command = "uvx"
+args = ["ruff", "server"]
+
+[[language]]
+name = "cpp"
+language-servers = ["clangd"]
+roots = ["compile_commands.json", ".clangd"]
+auto-format = true
+
+[[language]]
+name = "python"
+roots = ["pyproject.toml", "uv.lock", ".venv"]
+language-servers = ["basedpyright", "ruff"]
+auto-format = true
+
+[[language]]
+name = "rust"
+roots = ["Cargo.toml", "rust-project.json"]
+language-servers = ["rust-analyzer"]
+auto-format = true
+
+[formatters.rust]
+command = "cargo"
+args = ["fmt", "--", "--emit", "files"]

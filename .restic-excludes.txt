@@ -1,0 +1,9 @@
+wandb
+tmp
+.local/share
+.rustup
+.cargo
+.cache
+__pycache__
+.venv
+.vscode-server

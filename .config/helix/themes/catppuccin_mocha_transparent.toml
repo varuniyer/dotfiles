@@ -1,0 +1,16 @@
+inherits = "catppuccin_mocha" # or your preferred theme
+
+# 1. Force the main background to use the terminal's default (transparency)
+"ui.background" = {}
+
+# 2. CLEAR ALL THE THINGS
+# If these aren't cleared, they paint an opaque layer over your background image/blur
+"ui.buffer" = {} 
+"ui.statusline" = {}
+"ui.statusline.inactive" = {}
+"ui.help" = {}
+"ui.popup" = {}
+"ui.window" = {} 
+"ui.menu" = {}
+"ui.menu.selected" = {}
+"ui.virtual.inlay-hint" = { fg = "gray" }

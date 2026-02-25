@@ -1,0 +1,19 @@
+[project]
+name = "shell-scripts"
+version = "0.0.0"
+readme = "README.md"
+requires-python = "==3.12.10"
+
+dependencies = [
+    "GitPython==3.1.46"
+]
+
+[tool.ruff]
+exclude = ["**/__pycache__", "**/.venv"]
+lint.ignore = ["E722"]
+target-version = "py312"
+line-length = 99
+
+[tool.basedpyright]
+exclude = ["**/__pycache__", ".venv"]
+reportUnusedCallResult = false
