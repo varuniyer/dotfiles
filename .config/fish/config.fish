@@ -87,24 +87,73 @@ end
 source ~/.config/fish/functions/kube_functions.fish
 source ~/.config/fish/env.fish
 
-function fish_command_not_found --on-event fish_command_not_found
-    # event args: $argv[1] is the command name, $argv[2..] are its args
+# Directory for your Python scripts
+set -g PY_SCRIPT_DIR $HOME/.python_scripts
+
+# --- Create wrapper functions so commands don't highlight red ---
+function __pyshim_generate_wrappers --description 'Create wrappers for ~/.python_scripts/*.py'
+    if not test -d $PY_SCRIPT_DIR
+        return
+    end
+
+    for file in $PY_SCRIPT_DIR/*.py
+        if test -f $file
+            set name (basename $file .py)
+
+            if not functions -q $name
+                # The wrapper just calls the runner with the command name and args
+                eval "
+                    function $name --description 'Run $name.py from ~/.python_scripts'
+                        __pyshim_run $name \$argv
+                    end
+                "
+            end
+        end
+    end
+end
+
+function __pyshim_run
     set -l cmd $argv[1]
     set -l args $argv[2..-1]
 
-    # Look for matching Python scripts in ~/.python_scripts
-    set -l dir ~/.python_scripts
-    for p in (ls -1 $dir/*.py 2>/dev/null)
-        if test (basename $p .py) = $cmd
-            # Found exact match: run with python3
-            uv run --project $dir $p $args
-            return $status
-        end
+    set -l original_dir (pwd)
+    set -l script $PY_SCRIPT_DIR/$cmd.py
+
+    if test -f $script
+        cd $PY_SCRIPT_DIR
+        command python $cmd.py $original_dir $args
+        set -l cmd_status $status
+        cd $original_dir
+        return $cmd_status
     end
 
-    # fallback: original message
+    # If somehow no script, show the standard message
     printf "%s: command not found\n" $cmd >&2
     return 127
+end
+
+# --- Optional fallback if a command is typed before wrappers exist ---
+function fish_command_not_found --on-event fish_command_not_found
+    set -l cmd $argv[1]
+    set -l args $argv[2..-1]
+
+    # If there's a matching script, run it through the same runner
+    if test -f $PY_SCRIPT_DIR/$cmd.py
+        __pyshim_run $cmd $args
+        return $status
+    end
+
+    # Standard message
+    printf "%s: command not found\n" $cmd >&2
+    return 127
+end
+
+# Generate wrappers at shell startup (prevents red highlighting)
+__pyshim_generate_wrappers
+
+# Auto-refresh wrappers after each command so new scripts appear quickly.
+function __pyshim_postexec --on-event fish_postexec
+    __pyshim_generate_wrappers
 end
 
 function __auto_activate_venv --on-variable PWD
@@ -120,10 +169,6 @@ function __auto_activate_venv --on-variable PWD
 
         # 2. If no .venv exists, checks if we need to deactivate an old one
     else if functions -q deactivate
-        # We only deactivate if we have effectively LEFT the project folder.
-        # This handles the case where you are in a subdirectory (e.g., src/)
-        # which doesn't have the .venv file itself but should keep the venv active.
-
         # Calculate the root of the currently active venv
         set -l venv_root (string replace "/.venv" "" "$VIRTUAL_ENV")
 

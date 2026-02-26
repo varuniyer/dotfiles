@@ -2,22 +2,19 @@ import re
 import sys
 from pathlib import Path
 
-import git
+from utils import get_tracked_files
 
 
-def replace_in_files(files: list[str], pattern: str, repl: str) -> int:
+def replace_in_files(files: list[Path], pattern: str, repl: str) -> int:
     regex = re.compile(pattern)
 
-    for f in files:
-        path = Path(f)
-        if not path.is_file():
-            continue
+    for path in files:
         lines = path.read_text().splitlines()
 
         changed = False
         for i, line in enumerate(lines):
             if regex.search(line):
-                print(f"{f}:{i + 1}:{line}")
+                print(f"{path.as_posix()}:{i + 1}:{line}")
                 if "y" == input("Replace this line? (y/n) "):
                     lines[i] = regex.sub(repl, line)
                     changed = True
@@ -28,16 +25,11 @@ def replace_in_files(files: list[str], pattern: str, repl: str) -> int:
     return 0
 
 
-def main(argv: list[str] | None = None) -> int:
-    args = sys.argv if argv is None else argv
-    if len(args) != 3:
-        print("Usage: rp <from> <to>", file=sys.stderr)
-        return 1
-
-    _, pat, repl = args
-    files = [str(path) for path, _ in git.Repo(".").index.entries.keys()]
+def main() -> int:
+    dir, pat, repl = sys.argv[1:]
+    files = get_tracked_files(dir)
     return replace_in_files(files, pat, repl)
 
 
 if __name__ == "__main__":
-    raise SystemExit(main(sys.argv))
+    raise SystemExit(main())

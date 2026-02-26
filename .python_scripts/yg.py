@@ -1,17 +1,12 @@
-from pathlib import Path
+import sys
 
-import git
-
+from utils import get_tracked_files
 from yf import process_files
 
 
 def main() -> int:
-    repo = git.Repo(".")
-    files = [p for path, _ in repo.index.entries.keys() if Path(p := str(path)).is_file()]
-    if not files:
-        print("No tracked files found")
-        return 0
-    return process_files(files)
+    dir = sys.argv[1]
+    return process_files(get_tracked_files(dir))
 
 
 if __name__ == "__main__":
