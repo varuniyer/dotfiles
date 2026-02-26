@@ -27,8 +27,8 @@ git pull
 │  │     └─ catppuccin_mocha_transparent.toml — Transparent Catppuccin theme override.
 │  └─ starship.toml — starship prompt with Catppuccin palette and segmented modules.
 │
-├─ .python_scripts/
-│  ├─ pyproject.toml — Local Python package meta and tooling config.
+├─ .python_scripts/ — Collection of scripts runnable as fish commands (e.g. yf file.txt)
+│  ├─ pyproject.toml — Local Python config
 │  ├─ rp.py — Interactive regex replace across git-tracked files.
 │  ├─ yf.py — Concatenate files and copy via OSC52 through fish function yi.
 │  └─ yg.py — Copy all git-tracked files via OSC52.
