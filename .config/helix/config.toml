@@ -1,7 +1,6 @@
 theme = "catppuccin_mocha_transparent"
 
 [keys.normal]
-C-e = ["select_all", "delete_selection_noyank", ":clipboard-paste-before"]
 C-y = ["save_selection", "select_all", ":clipboard-yank", "jump_backward"]
 X = ["extend_line_up", "extend_to_line_bounds"]
 Z = { Z = ":wqa", Q = ":qa!" }
