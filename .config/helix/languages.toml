@@ -10,6 +10,10 @@ args = ["lsp", "-j", "24"]
 command = "uvx"
 args = ["ruff", "server"]
 
+[language-server.rust-analyzer]
+config = { check = { command = "clippy" } }
+roots = ["Cargo.toml"]
+
 [[language]]
 name = "cpp"
 language-servers = ["clangd"]
