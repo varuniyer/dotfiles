@@ -23,9 +23,12 @@ o = ":run-shell-command uvx ruff check --select I --fix . > /dev/null 2>&1"
 Y = ":clipboard-yank"
 
 [keys.insert]
-k = { j = "normal_mode" }
 "C-s" = ":wa"
 "C-r" = ":reload-all"
+
+[keys.insert.j]
+f = "normal_mode"
+j = { f = [ "move_char_left", ":append-output /bin/echo -n j", "move_char_right", "normal_mode" ] } 
 
 [editor]
 line-number = "relative"
