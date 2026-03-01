@@ -30,6 +30,7 @@ auto-format = true
 name = "rust"
 roots = ["Cargo.toml", "rust-project.json"]
 language-servers = ["rust-analyzer"]
+formatter = { command = "rustfmt", args = ["--edition", "2024"] }
 auto-format = true
 
 [formatters.rust]
