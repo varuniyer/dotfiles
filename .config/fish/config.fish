@@ -9,8 +9,6 @@ if status is-interactive
     set -gx BREW_PREFIX /home/linuxbrew/.linuxbrew/
     set -gx TMPDIR ~/tmp
 
-    fish_add_path $BREW_PREFIX/bin ~/.local/bin
-
     set -gx LANG en_US.UTF-8
     set -gx LANGUAGE en_US:en
     set -gx LC_ALL en_US.UTF-8
@@ -73,7 +71,6 @@ function u
     brew autoremove
     brew cleanup --prune=all
     uv tool upgrade --all
-    llm install -U llm-deepseek llm-anthropic llm-moonshot
 end
 
 function yi
