@@ -4,11 +4,13 @@
 
 !/.config
 /.config/**
-!/.config/fish/
+!/.config/fish
 !/.config/fish/**
-!/.config/helix/
+!/.config/helix
 !/.config/helix/**
 !/.config/starship.toml
+!/.config/io.datasette.llm
+!/.config/io.datasette.llm/extra-openai-models.yaml
 
 !/.python_scripts
 !/.restic-excludes.txt

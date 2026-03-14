@@ -1,0 +1,34 @@
+- model_id: qwen
+  model_name: qwen3.5-397b-a17b
+  api_base: "https://dashscope-intl.aliyuncs.com/compatible-mode/v1"
+  api_key_name: alibaba
+  supports_tools: true
+  can_stream: true
+  vision: true
+
+- model_id: claude
+  model_name: claude-haiku-4-5
+  api_base: "https://api.anthropic.com/v1/"
+  api_key_name: anthropic
+  supports_tools: true
+  can_stream: true
+  vision: true
+
+- model_id: deepseek
+  model_name: deepseek-reasoner
+  api_base: "https://api.deepseek.com"
+  api_key_name: deepseek
+  supports_tools: true
+  can_stream: true
+  vision: true
+
+- model_id: kimi
+  model_name: kimi-k2-thinking
+  api_base: "https://api.moonshot.ai/v1"
+  api_key_name: moonshot
+  supports_tools: true
+  can_stream: true
+  vision: true
+
+
+  
