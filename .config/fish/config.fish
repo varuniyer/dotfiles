@@ -7,6 +7,7 @@ if status is-interactive
     set -gx TERM tmux-256color
     set -gx EDITOR hx
     set -gx BREW_PREFIX /home/linuxbrew/.linuxbrew/
+    set -gx LD_LIBRARY_PATH /usr/local/cuda/lib64 $LD_LIBRARY_PATH
     set -gx TMPDIR ~/tmp
 
     set -gx LANG en_US.UTF-8
