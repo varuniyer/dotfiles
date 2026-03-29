@@ -18,6 +18,7 @@ roots = ["Cargo.toml"]
 name = "cpp"
 language-servers = ["clangd"]
 roots = ["compile_commands.json", ".clangd"]
+formatter = { command = "clang-format", args = ["--assume-filename=file.cpp"] }
 auto-format = true
 
 [[language]]

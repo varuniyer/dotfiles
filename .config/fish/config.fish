@@ -39,6 +39,8 @@ if status is-interactive
     alias hxe="hx ~/.config/fish/env.fish; and source ~/.config/fish/env.fish"
     alias hxr="hx ~/.config/fish/functions/research_functions.fish; and source ~/.config/fish/config.fish"
     alias hxk="hx ~/.config/fish/functions/kube_functions.fish; and source ~/.config/fish/config.fish"
+    alias hxh="hx ~/.config/helix/config.toml"
+    alias hxl="hx ~/.config/helix/languages.toml"
 
     # Python / Venv
     alias sa="source .venv/bin/activate.fish"
@@ -51,7 +53,7 @@ if status is-interactive
     alias pi="uv pip"
 
     # Env var setting in alias requires 'env' command or block
-    alias p="sa; env PYTHONPATH=.:$PYTHONPATH python"
+    alias p="sa; PYTHONPATH=.:$PYTHONPATH python"
 
     # --- Restic ---
     alias re="restic --verbose -r $RESTIC_REPOSITORY"
@@ -161,6 +163,7 @@ function __auto_activate_venv --on-variable PWD
     if test -f .venv/bin/activate.fish
         # Only source if it's not arguably already the active one
         if test "$VIRTUAL_ENV" != "$PWD/.venv"
+            set -x WANDB_PROJECT (basename (pwd))
             source .venv/bin/activate.fish
         end
 
