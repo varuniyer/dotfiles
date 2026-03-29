@@ -6,8 +6,7 @@ if status is-interactive
     ## --- Environment Variables ---
     set -gx TERM tmux-256color
     set -gx EDITOR hx
-    set -gx BREW_PREFIX /home/linuxbrew/.linuxbrew/
-    set -gx TMPDIR ~/tmp
+    set -gx BREW_PREFIX /opt/homebrew
 
     set -gx LANG en_US.UTF-8
     set -gx LANGUAGE en_US:en

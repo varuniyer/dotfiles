@@ -1,5 +1,5 @@
 [language-server.clangd]
-command = "clangd"
+command = "clangd-22"
 args = ["--enable-config"]
 
 [language-server.pyrefly]
