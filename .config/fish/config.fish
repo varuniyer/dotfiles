@@ -162,7 +162,6 @@ function __auto_activate_venv --on-variable PWD
     if test -f .venv/bin/activate.fish
         # Only source if it's not arguably already the active one
         if test "$VIRTUAL_ENV" != "$PWD/.venv"
-            set -x WANDB_PROJECT (basename (pwd))
             source .venv/bin/activate.fish
         end
 
