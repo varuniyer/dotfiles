@@ -74,6 +74,7 @@ function u
     brew autoremove
     brew cleanup --prune=all
     uv tool upgrade --all
+    curl -fsSL https://ollama.com/install.sh | sh
 end
 
 function yi
