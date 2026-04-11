@@ -50,6 +50,7 @@ if status is-interactive
     # Utils
     alias apc="uvx --from git+https://github.com/acl-org/aclpubcheck aclpubcheck --paper_type long"
     alias pi="uv pip"
+    alias rg="rg -M 120"
 
     # Env var setting in alias requires 'env' command or block
     alias p="sa; PYTHONPATH=.:$PYTHONPATH python"

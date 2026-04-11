@@ -2,6 +2,9 @@
 command = "clangd-22"
 args = ["--enable-config"]
 
+[language-server.tserver]
+command = "typescript-language-server"
+
 [language-server.pyrefly]
 command = "pyrefly"
 args = ["lsp", "-j", "24"]
@@ -26,6 +29,12 @@ name = "python"
 roots = ["pyproject.toml", "uv.lock", ".venv"]
 language-servers = ["basedpyright", "ruff"]
 auto-format = true
+
+[[language]]
+name = "typescript"
+language-servers = ["tserver"]
+auto-format = true
+roots = ["node_modules"]
 
 [[language]]
 name = "rust"

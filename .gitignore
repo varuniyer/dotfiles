@@ -19,6 +19,7 @@
 fish_frozen_key_bindings.fish
 fish_variables
 env.fish
+.DS_Store
 *.bak
 *.lock
 *.db
