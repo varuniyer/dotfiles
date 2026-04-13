@@ -4,6 +4,8 @@
 
 !/.config
 /.config/**
+!/.config/rio
+!/.config/rio/**
 !/.config/fish
 !/.config/fish/**
 !/.config/helix
