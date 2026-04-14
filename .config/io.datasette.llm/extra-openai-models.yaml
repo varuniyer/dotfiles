@@ -4,7 +4,7 @@
   api_key_name: alibaba
 
 - model_id: glm
-  model_name: glm-5
+  model_name: glm-5.1
   api_base: "https://api.z.ai/api/paas/v4/"
   api_key_name: glm
 
