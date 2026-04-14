@@ -21,7 +21,7 @@ def process_files(args: list[str]) -> int:
     dir_path = Path(dir)
     num_files, data = concat_files([dir_path / f for f in files])
     rc = subprocess.run(["fish", "-ic", "yi"], input=data).returncode
-    print(f"Done! Processed {num_files}/{len(files)} files.")
+    print(f"Done! Yanked {num_files}/{len(files)} files.")
     return rc
 
 
