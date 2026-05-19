@@ -27,7 +27,3 @@
   model_name: kimi-k2.6
   api_base: "https://api.moonshot.ai/v1"
   api_key_name: moonshot
-
-- model_id: gemma
-  model_name: gemma4:31b
-  api_base: "http://localhost:11434/v1"
