@@ -1,5 +1,6 @@
-Brave
-Brave*
+._*
+Logs
+Suggestions
 group.com.apple.*
 *com.apple.*
 com.utmapp.*
@@ -14,6 +15,7 @@ Intents
 Java
 Trial
 pnpm
+.npm
 .pnpm
 FileProvider
 .venv

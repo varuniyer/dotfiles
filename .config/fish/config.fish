@@ -55,13 +55,6 @@ if status is-interactive
     # Env var setting in alias requires 'env' command or block
     alias p="sa; PYTHONPATH=.:$PYTHONPATH python"
 
-    # --- Restic ---
-    alias re="restic --verbose -r $RESTIC_REPOSITORY"
-    alias reb="re backup ~ --exclude-file ~/.restic-excludes.txt"
-    alias res="re snapshots"
-    alias rep="re prune"
-    alias ref="re forget"
-
     alias kgr="chmod go-r ~/Documents/.config/kube/config"
 
     # --- Starship ---
@@ -73,6 +66,7 @@ function u
     brew autoremove
     brew cleanup --prune=all
     uv tool upgrade --all
+    go install golang.org/x/tools/gopls@latest
 end
 
 function yi
@@ -176,6 +170,23 @@ function __auto_activate_venv --on-variable PWD
             deactivate
         end
     end
+end
+
+function b --description "Backup server + laptop: pg_dump over SSH tunnel + rsync WebDAV + restic"
+    mkdir -p $LOCAL_PG
+    mkdir -p $LOCAL_WEBDAV
+
+    echo "==> Running pg_dump over SSH tunnel..."
+    if not nc -z 127.0.0.1 5432
+        ssh -fNL 5432:127.0.0.1:5432 $SERVER
+    end
+    pg_dump -h 127.0.0.1 -p 5432 -U experiments -d experiments | gzip >$DUMP_FILE
+
+    echo "==> Syncing WebDAV data..."
+    rclone sync webdav:/ $LOCAL_WEBDAV/ --metadata -L -v
+
+    echo "==> Backup up all data..."
+    r b
 end
 
 if status is-interactive

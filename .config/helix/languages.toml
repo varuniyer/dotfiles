@@ -1,3 +1,9 @@
+[language-server.gopls]
+command = "gopls"
+args = ["-logfile=/tmp/gopls.log",  "serve"]
+[language-server.gopls.config]
+"ui.diagnostic.staticcheck" = true
+
 [language-server.clangd]
 command = "clangd-22"
 args = ["--enable-config"]
@@ -16,6 +22,14 @@ args = ["ruff", "server"]
 [language-server.rust-analyzer]
 config = { check = { command = "clippy" } }
 roots = ["Cargo.toml"]
+
+[[language]]
+name = "go"
+roots = ["go.mod", "go.work"]
+auto-format = true
+formatter = { command = "gofmt" }
+comment-token = "//"
+language-servers = ["gopls"]
 
 [[language]]
 name = "cpp"
