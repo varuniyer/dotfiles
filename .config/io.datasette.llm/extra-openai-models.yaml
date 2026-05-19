@@ -1,10 +1,10 @@
 - model_id: qwen
-  model_name: qwen3.5-397b-a17b
+  model_name: qwen3.7-max-preview
   api_base: "https://dashscope-intl.aliyuncs.com/compatible-mode/v1"
   api_key_name: alibaba
 
 - model_id: glm
-  model_name: glm-5
+  model_name: glm-5.1
   api_base: "https://api.z.ai/api/paas/v4/"
   api_key_name: glm
 
@@ -19,12 +19,12 @@
   api_key_name: gemini
 
 - model_id: deepseek
-  model_name: deepseek-reasoner
+  model_name: deepseek-v4-pro
   api_base: "https://api.deepseek.com"
   api_key_name: deepseek
 
 - model_id: kimi
-  model_name: kimi-k2-thinking
+  model_name: kimi-k2.6
   api_base: "https://api.moonshot.ai/v1"
   api_key_name: moonshot
 
