@@ -1,5 +1,5 @@
 - model_id: qwen
-  model_name: qwen3.7-max-preview
+  model_name: qwen3.6-max-preview
   api_base: "https://dashscope-intl.aliyuncs.com/compatible-mode/v1"
   api_key_name: alibaba
 

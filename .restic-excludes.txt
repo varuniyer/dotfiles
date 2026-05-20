@@ -30,6 +30,7 @@ Shortcuts
 *Kit
 LanguageModeling
 *Storage*
+.Trash
 .cache
 .vscode
 wandb

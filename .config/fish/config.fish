@@ -176,9 +176,9 @@ function b --description "Backup server + laptop: pg_dump over SSH tunnel + rsyn
     mkdir -p $LOCAL_PG
     mkdir -p $LOCAL_WEBDAV
 
-    echo "==> Running pg_dump over SSH tunnel..."
+    echo "==> Running pg_dump over stunnel..."
     if not nc -z 127.0.0.1 5432
-        ssh -fNL 5432:127.0.0.1:5432 $SERVER
+        stunnel ~/.config/stunnel/postgres.conf
     end
     pg_dump -h 127.0.0.1 -p 5432 -U experiments -d experiments | gzip >$DUMP_FILE
 
