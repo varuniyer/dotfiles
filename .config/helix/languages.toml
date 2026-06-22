@@ -1,3 +1,22 @@
+[language-server.texlab]
+command = "texlab"
+
+[language-server.texlab.config.texlab.build]
+executable = "latexmk"
+args = [
+  "-pdf",
+  "-interaction=nonstopmode",
+  "-synctex=1",
+  "-outdir=build",
+  "%f"
+]
+onSave = true
+# forwardSearchAfter = true
+
+[language-server.texlab.config.texlab.chktex]
+onOpenAndSave = true
+onEdit = true
+
 [language-server.clangd]
 command = "clangd-22"
 args = ["--enable-config"]
@@ -13,6 +32,10 @@ args = ["ruff", "server"]
 [language-server.rust-analyzer]
 config = { check = { command = "clippy" } }
 roots = ["Cargo.toml"]
+
+[[language]]
+name = "latex"
+language-servers = ["texlab"]
 
 [[language]]
 name = "cpp"

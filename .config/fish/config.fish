@@ -54,7 +54,7 @@ if status is-interactive
     alias pi="uv pip"
 
     # Env var setting in alias requires 'env' command or block
-    alias p="sa; PYTHONPATH=.:$PYTHONPATH python"
+    alias p="sa; python"
 
     # --- Restic ---
     alias re="restic --verbose -r $RESTIC_REPOSITORY"
@@ -74,7 +74,6 @@ function u
     brew autoremove
     brew cleanup --prune=all
     uv tool upgrade --all
-    curl -fsSL https://ollama.com/install.sh | sh
 end
 
 function yi
