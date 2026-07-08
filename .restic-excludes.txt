@@ -1,6 +1,9 @@
 wandb
 tmp
 .local/share
+.uvcache
+.hf
+.triton
 .rustup
 .cargo
 .cache
