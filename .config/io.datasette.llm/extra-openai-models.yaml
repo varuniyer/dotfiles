@@ -1,3 +1,8 @@
+- model_id: muse
+  model_name: muse-spark-1.1
+  api_base: "https://api.meta.ai/v1"
+  api_key_name: meta
+
 - model_id: qwen
   model_name: qwen3.7-max-preview
   api_base: "https://dashscope-intl.aliyuncs.com/compatible-mode/v1"
