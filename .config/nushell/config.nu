@@ -14,6 +14,8 @@ $env.PATH ++= [
 $env.LLM_USER_PATH = "~/.config/io.datasette.llm"
 $env.EDITOR = "hx"
 $env.VIRTUAL_ENV_DISABLE_PROMPT = true
+$env.PROMPT_INDICATOR_VI_INSERT = ""
+$env.PROMPT_INDICATOR_VI_NORMAL = ""
 $env.config.show_banner = false
 $env.config.edit_mode = 'vi'
 $env.config.keybindings ++= [
@@ -42,6 +44,47 @@ $env.config.keybindings ++= [
   }
 ]
 
+# --- Completions (delegate external-command completions to fish) ---
+let fish_completer = {|spans|
+    let results = fish --command $"complete '--do-complete=($spans | str replace --all "'" "\\'" | str join ' ')'"
+    | from tsv --flexible --noheaders --no-infer
+    | rename value description
+    | update value {|row|
+      let value = $row.value
+      let need_quote = ['\' ',' '[' ']' '(' ')' ' ' '\t' "'" '"' "`"] | any {$in in $value}
+      if ($need_quote and ($value | path exists)) {
+        let expanded_path = if ($value starts-with ~) {$value | path expand --no-symlink} else {$value}
+        $'"($expanded_path | str replace --all "\"" "\\\"")"'
+      } else {$value}
+    }
+    # returning null (instead of an empty list) falls back to nushell's file completion
+    if ($results | is-empty) { null } else { $results }
+}
+$env.config.completions.external = {
+  enable: true
+  completer: $fish_completer
+}
+
+# override the built-in completion menu to drop the "| " marker
+# ($env.config.menus is empty by default; defining a menu named
+# completion_menu replaces the internal one)
+$env.config.menus ++= [{
+    name: completion_menu
+    only_buffer_difference: false
+    marker: ""
+    type: {
+        layout: columnar
+        columns: 4
+        col_width: 20
+        col_padding: 2
+    }
+    style: {
+        text: green
+        selected_text: green_reverse
+        description_text: yellow
+    }
+}]
+
 # --- Modules ---
 source ~/.config/nushell/secrets.nu   # private env vars (edit with `hxs`)
 source ~/.config/nushell/kube.nu      # kubectl wrappers (edit with `hxk`)
@@ -53,13 +96,6 @@ def hxs [] { hx ~/.config/nushell/secrets.nu; exec nu }
 def hxk [] { hx ~/.config/nushell/kube.nu; exec nu }
 alias hxh = hx ~/.config/helix/config.toml
 alias hxl = hx ~/.config/helix/languages.toml
-
-# --- Python / venv ---
-alias sa = overlay use .venv/bin/activate.nu
-def p [...args] {
-  with-env { PYTHONPATH: $".:($env.PYTHONPATH? | default '')" } { ^"./.venv/bin/python" ...$args }
-}
-alias pi = uv pip
 
 # Auto-activate .venv on cd, deactivate when leaving its tree (ports
 # __auto_activate_venv). String-form hooks so `overlay use` parses at cd time.
