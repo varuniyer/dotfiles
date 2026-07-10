@@ -1,0 +1,172 @@
+# Auto-attach tmux on interactive launch outside tmux (mirrors fish config).
+# Guarded by is-interactive so `nu -c ...` scripts are never hijacked.
+if $nu.is-interactive and ($env.TMUX? | is-empty) {
+  exec tmux new -A -s main
+}
+
+$env.PATH ++= [
+    "~/.local/bin",
+    "/opt/homebrew/bin",
+    # libpq is keg-only, so pg_dump (used by `b`) isn't linked into /opt/homebrew/bin
+    "/opt/homebrew/opt/libpq@17/bin",
+    "~/.orbstack/bin",
+]
+$env.LLM_USER_PATH = "~/.config/io.datasette.llm"
+$env.EDITOR = "hx"
+$env.VIRTUAL_ENV_DISABLE_PROMPT = true
+$env.config.show_banner = false
+$env.config.edit_mode = 'vi'
+$env.config.keybindings ++= [
+  {
+    name: vi_ctrl_j_escape
+    modifier: control
+    keycode: char_j
+    mode: [vi_insert]
+    event: { send: vichangemode, mode: normal }
+  }
+  {
+    # Ctrl-A: accept the entire autosuggestion (was accept-autosuggestion)
+    name: accept_hint
+    modifier: control
+    keycode: char_a
+    mode: [vi_insert]
+    event: { send: historyhintcomplete }
+  }
+  {
+    # Ctrl-S: accept a single word of the autosuggestion (was forward-bigword)
+    name: accept_hint_word
+    modifier: control
+    keycode: char_s
+    mode: [vi_insert]
+    event: { send: historyhintwordcomplete }
+  }
+]
+
+# --- Modules ---
+source ~/.config/nushell/secrets.nu   # private env vars (edit with `hxs`)
+source ~/.config/nushell/kube.nu      # kubectl wrappers (edit with `hxk`)
+
+# --- Config editors (edit, then `exec nu` to reload) ---
+alias reload = exec nu
+def hxn [] { hx ~/.config/nushell/config.nu; exec nu }
+def hxs [] { hx ~/.config/nushell/secrets.nu; exec nu }
+def hxk [] { hx ~/.config/nushell/kube.nu; exec nu }
+alias hxh = hx ~/.config/helix/config.toml
+alias hxl = hx ~/.config/helix/languages.toml
+
+# --- Python / venv ---
+alias sa = overlay use .venv/bin/activate.nu
+def p [...args] {
+  with-env { PYTHONPATH: $".:($env.PYTHONPATH? | default '')" } { ^"./.venv/bin/python" ...$args }
+}
+alias pi = uv pip
+
+# Auto-activate .venv on cd, deactivate when leaving its tree (ports
+# __auto_activate_venv). String-form hooks so `overlay use` parses at cd time.
+$env.config.hooks.env_change.PWD = ($env.config.hooks.env_change.PWD? | default []) ++ [
+  {
+    condition: {|before, after| ('.venv/bin/activate.nu' | path exists) and (($env.VIRTUAL_ENV? | default '') != ($after | path join '.venv')) }
+    code: "overlay use .venv/bin/activate.nu"
+  }
+  {
+    condition: {|before, after| (not ('.venv/bin/activate.nu' | path exists)) and ('activate' in (overlay list | get name)) and (not ($after | str starts-with ($env.VIRTUAL_ENV? | default '/__no_venv__/x' | path dirname))) }
+    code: "overlay hide activate --keep-env [ PWD ]"
+  }
+]
+
+# --- Git ---
+def gpa [] { git push origin main; git push github main }
+
+# --- Utils ---
+alias apc = uvx --from git+https://github.com/acl-org/aclpubcheck aclpubcheck --paper_type long
+alias kgr = chmod go-r ~/Documents/.config/kube/config
+alias tf = tail -f
+alias rg = ^rg -M 120
+
+# --- Restic (repo from $env.RESTIC_REPOSITORY) ---
+alias re = restic --verbose
+# `r b|s|p|f [extra]` — backup / snapshots / prune / forget (ports r.py)
+def r [sub: string, extra?: string] {
+  let base = (match $sub {
+    "b" => ["backup", $env.HOME, "--exclude-file", $"($env.HOME)/.restic-excludes.txt"]
+    "s" => ["snapshots"]
+    "p" => ["prune"]
+    "f" => ["forget"]
+    _ => (error make {msg: $"r: unknown subcommand '($sub)' — use b, s, p, or f"})
+  })
+  let args = (if $extra != null { $base | append $extra } else { $base })
+  restic --verbose ...$args
+}
+
+# --- Yank files over OSC52 (ports yi.fish / yf.py / yg.py) ---
+def yi [] {
+  let d = ($in | ^base64 -w0 | str trim)
+  print -n $"\u{1b}]52;c;($d)\u{7}"
+}
+
+# Concat readable (utf-8) files with headers and yank them over OSC52. Terminals
+# silently drop an oversized OSC52 payload, so pack smallest-first and stop before
+# the base64 length exceeds `limit` — maximizing the number of files covered.
+def yank-files [files: list<string>, limit: int] {
+  let texts = ($files | each {|f|
+      let p = ($f | path expand)
+      let raw = (open --raw $p | into binary)
+      if (($raw | decode utf-8 | encode utf-8) == $raw) { $"=== File: ($p) ===\n($raw | decode utf-8)" }
+    })
+  # Smallest first, then greedily keep files while the joined base64 stays under the cap.
+  let picked = ($texts
+    | sort-by {|t| $t | into binary | length}
+    | reduce --fold { keep: [], total: 0 } {|t, acc|
+        let raw_total = $acc.total + (if ($acc.keep | is-empty) { 0 } else { 2 }) + ($t | into binary | length)
+        if ((($raw_total + 2) // 3 * 4) > $limit) { $acc } else { { keep: ($acc.keep | append $t), total: $raw_total } }
+      })
+  $picked.keep | str join "\n\n" | yi
+  let b64 = (($picked.total + 2) // 3 * 4)
+  print $"Done! Yanked ($picked.keep | length)/($files | length) files \(($picked.total) bytes, ($b64) base64, cap ($limit)\)."
+}
+def yf [...files: string, --limit (-l): int = 74994] { yank-files $files $limit }
+def yg [--limit (-l): int = 74994] { yank-files (git ls-files | lines | where {|f| ($f | path type) == "file"}) $limit }
+
+# Interactive regex replace across git-tracked files (ports rp.py).
+def rp [pattern: string, repl: string] {
+  for path in (git ls-files | lines | where {|f| ($f | path type) == "file"}) {
+    let raw = (open --raw $path | into binary)
+    if (($raw | decode utf-8 | encode utf-8) != $raw) { continue }
+    let orig = ($raw | decode utf-8 | split row "\n")
+    # Prompt per matching line (sequential), returning the kept-or-replaced line.
+    let new = ($orig | enumerate | each {|it|
+      if ($it.item =~ $pattern) {
+        print $"($path):($it.index + 1):($it.item)"
+        if (input "Replace this line? (y/n) ") == "y" {
+          $it.item | str replace --all --regex $pattern $repl
+        } else { $it.item }
+      } else { $it.item }
+    })
+    if $new != $orig { $new | str join "\n" | save --raw --force $path }
+  }
+}
+
+# --- Upgrade everything (ports the `u` function) ---
+def u [] {
+  brew upgrade -y
+  brew autoremove
+  brew cleanup --prune=all
+  uv tool upgrade --all
+  go install golang.org/x/tools/gopls@latest
+}
+
+# --- Backup (ports the `b` function) ---
+# pg_dump the experiments db, mirror the WebDAV remote, then restic-backup $HOME.
+# Runs daily at noon via ~/Library/LaunchAgents/com.user.runb.plist; connection
+# and path env vars (LOCAL_PG, LOCAL_WEBDAV, DUMP_FILE, PG*/RESTIC_*) live in secrets.nu.
+def b [] {
+  mkdir ($env.LOCAL_PG | path expand)
+  mkdir ($env.LOCAL_WEBDAV | path expand)
+
+  pg_dump | gzip | save --raw --force ($env.DUMP_FILE | path expand)
+  rclone sync webdav:/ $"($env.LOCAL_WEBDAV | path expand)/" --metadata -L -v
+  r b
+}
+
+mkdir ($nu.data-dir | path join "vendor/autoload")
+starship init nu | save -f ($nu.data-dir | path join "vendor/autoload/starship.nu")

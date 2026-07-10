@@ -199,6 +199,7 @@ filters = []
 # You can also set family on root to overwrite all fonts.
 [fonts]
 family = "Maple Mono NF"
+size = 12
 #
 # You can also specify extra fonts to load
 # [fonts]

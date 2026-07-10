@@ -47,3 +47,7 @@ render = true
 
 [editor.lsp]
 display-inlay-hints = true
+
+[editor.soft-wrap]
+enable = true
+wrap-indicator = ""

@@ -1,20 +1,23 @@
 /*
 !/.gitignore
+!/.gitattributes
 !/README.md
 
 !/.config
 /.config/**
 !/.config/rio
 !/.config/rio/**
-!/.config/fish
-!/.config/fish/**
+!/.config/nushell
+!/.config/nushell/**
+/.config/nushell/secrets.nu
+/.config/nushell/env.nu
+/.config/nushell/history.txt
 !/.config/helix
 !/.config/helix/**
 !/.config/starship.toml
 !/.config/io.datasette.llm
 !/.config/io.datasette.llm/extra-openai-models.yaml
 
-!/.python_scripts
 !/.restic-excludes.txt
 !/.tmux.conf
 
