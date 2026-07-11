@@ -40,6 +40,13 @@ $env.config.keybindings ++= [
   }
 ]
 
+$env.config.history = {
+    file_format: "sqlite" # Use SQLite for structured storage and sharing
+    isolation: false      # Disable isolation to share history across all sessions
+    sync_on_enter: true   # Write history to disk after each command
+    max_size: 100000      # Maximum number of history entries
+}
+
 # --- Completions (delegate external-command completions to fish) ---
 let fish_completer = {|spans|
     let results = fish --command $"complete '--do-complete=($spans | str replace --all "'" "\\'" | str join ' ')'"
