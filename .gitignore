@@ -10,6 +10,7 @@
 /.config/nushell/secrets.nu
 /.config/nushell/env.nu
 /.config/nushell/history.txt
+/.config/nushell/history.sqlite3*
 !/.config/helix
 !/.config/helix/**
 !/.config/starship.toml
