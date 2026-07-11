@@ -9,6 +9,7 @@
 !/.config/rio/**
 !/.config/nushell
 !/.config/nushell/**
+/.config/nushell/history.sqlite3*
 /.config/nushell/secrets.nu
 /.config/nushell/env.nu
 /.config/nushell/history.txt
