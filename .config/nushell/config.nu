@@ -1,16 +1,10 @@
-# Auto-attach tmux on interactive launch outside tmux (mirrors fish config).
-# Guarded by is-interactive so `nu -c ...` scripts are never hijacked.
-if $nu.is-interactive and ($env.TMUX? | is-empty) {
-  exec tmux new -A -s main
-}
-
-$env.PATH ++= [
+$env.PATH = [
     "~/.local/bin",
     "/opt/homebrew/bin",
     # libpq is keg-only, so pg_dump (used by `b`) isn't linked into /opt/homebrew/bin
     "/opt/homebrew/opt/libpq@17/bin",
     "~/.orbstack/bin",
-]
+] ++ $env.PATH
 $env.LLM_USER_PATH = "~/.config/io.datasette.llm"
 $env.EDITOR = "hx"
 $env.VIRTUAL_ENV_DISABLE_PROMPT = true
@@ -209,6 +203,12 @@ def b [] {
   pg_dump | gzip | save --raw --force ($env.DUMP_FILE | path expand)
   rclone sync webdav:/ $"($env.LOCAL_WEBDAV | path expand)/" --metadata -L -v
   r b
+}
+
+# Auto-attach tmux on interactive launch outside tmux (mirrors fish config).
+# Guarded by is-interactive so `nu -c ...` scripts are never hijacked.
+if $nu.is-interactive and ($env.TMUX? | is-empty) {
+  exec tmux new -A -s main
 }
 
 mkdir ($nu.data-dir | path join "vendor/autoload")
