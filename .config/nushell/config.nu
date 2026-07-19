@@ -3,7 +3,7 @@ $env.PATH = [
     "/opt/homebrew/bin",
     # libpq is keg-only, so pg_dump (used by `b`) isn't linked into /opt/homebrew/bin
     "/opt/homebrew/opt/libpq@17/bin",
-    "~/.orbstack/bin",
+    "/usr/local/bin"
 ] ++ $env.PATH
 $env.LLM_USER_PATH = "~/.config/io.datasette.llm"
 $env.EDITOR = "hx"
