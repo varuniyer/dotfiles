@@ -1,13 +1,7 @@
-# Auto-attach tmux on interactive launch outside tmux (mirrors fish config).
-# Guarded by is-interactive so `nu -c ...` scripts are never hijacked.
-if $nu.is-interactive and ($env.TMUX? | is-empty) {
-  exec tmux new -A -s main
-}
-
-$env.PATH ++= [
+$env.PATH = [
     "~/.local/bin",
     "/home/linuxbrew/.linuxbrew/bin",
-]
+] ++ $env.PATH
 $env.EDITOR = "hx"
 $env.VIRTUAL_ENV_DISABLE_PROMPT = true
 $env.PROMPT_INDICATOR_VI_INSERT = ""
@@ -190,6 +184,12 @@ def u [] {
   brew autoremove
   brew cleanup --prune=all
   uv tool upgrade --all
+}
+
+# Auto-attach tmux on interactive launch outside tmux (mirrors fish config).
+# Guarded by is-interactive so `nu -c ...` scripts are never hijacked.
+if $nu.is-interactive and ($env.TMUX? | is-empty) {
+  exec tmux new -A -s main
 }
 
 mkdir ($nu.data-dir | path join "vendor/autoload")
