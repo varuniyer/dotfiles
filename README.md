@@ -40,8 +40,8 @@ git pull origin main
 Defined in `config.nu` (replacing the former `.python_scripts/`):
 
 - `r b|s|p|f [extra]` — restic backup / snapshots / prune / forget.
-- `yf <files>` / `yg` — Concatenate files (or all git-tracked files) and copy via OSC52. Packs smallest-first so the payload stays under the terminal's OSC52 limit; `-l` overrides the cap.
-- `yi` — Copy stdin to the system clipboard via OSC52.
+- `yf <files>` / `yg` — Concatenate files (or all git-tracked files) and copy to the tmux clipboard.
+- `yi` — Copy stdin to the tmux clipboard.
 - `rp <pattern> <repl>` — Interactive regex replace across git-tracked files.
 - `u` — Upgrade brew packages and uv tools.
 - `hxn` / `hxs` / `hxk` — Edit `config.nu` / `secrets.nu` / `kube.nu`, then reload the shell.
