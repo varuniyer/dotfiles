@@ -135,34 +135,21 @@ def r [sub: string, extra?: string] {
   restic --verbose ...$args
 }
 
-# --- Yank files over OSC52 (ports yi.fish / yf.py / yg.py) ---
-def yi [] {
-  let d = ($in | ^base64 -w0 | str trim)
-  print -n $"\u{1b}]52;c;($d)\u{7}"
-}
+# --- Yank files to the system clipboard (ports yi.fish / yf.py / yg.py) ---
+def yi [] { $in | pbcopy }
 
-# Concat readable (utf-8) files with headers and yank them over OSC52. Terminals
-# silently drop an oversized OSC52 payload, so pack smallest-first and stop before
-# the base64 length exceeds `limit` — maximizing the number of files covered.
-def yank-files [files: list<string>, limit: int] {
+# Concat readable (utf-8) files with headers and copy them to the clipboard.
+def yank-files [files: list<string>] {
   let texts = ($files | each {|f|
       let p = ($f | path expand)
       let raw = (open --raw $p | into binary)
       if (($raw | decode utf-8 | encode utf-8) == $raw) { $"=== File: ($p) ===\n($raw | decode utf-8)" }
     })
-  # Smallest first, then greedily keep files while the joined base64 stays under the cap.
-  let picked = ($texts
-    | sort-by {|t| $t | into binary | length}
-    | reduce --fold { keep: [], total: 0 } {|t, acc|
-        let raw_total = $acc.total + (if ($acc.keep | is-empty) { 0 } else { 2 }) + ($t | into binary | length)
-        if ((($raw_total + 2) // 3 * 4) > $limit) { $acc } else { { keep: ($acc.keep | append $t), total: $raw_total } }
-      })
-  $picked.keep | str join "\n\n" | yi
-  let b64 = (($picked.total + 2) // 3 * 4)
-  print $"Done! Yanked ($picked.keep | length)/($files | length) files \(($picked.total) bytes, ($b64) base64, cap ($limit)\)."
+  $texts | str join "\n\n" | yi
+  print $"Done! Yanked ($texts | length)/($files | length) files."
 }
-def yf [...files: string, --limit (-l): int = 74994] { yank-files $files $limit }
-def yg [--limit (-l): int = 74994] { yank-files (git ls-files | lines | where {|f| ($f | path type) == "file"}) $limit }
+def yf [...files: string] { yank-files $files }
+def yg [] { yank-files (git ls-files | lines | where {|f| ($f | path type) == "file"}) }
 
 # Interactive regex replace across git-tracked files (ports rp.py).
 def rp [pattern: string, repl: string] {
