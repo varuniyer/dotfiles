@@ -1,22 +1,25 @@
 - model_id: muse
-  model_name: muse-spark-1.1
+  model_name: muse-spark-1.2
   api_base: "https://api.meta.ai/v1"
   api_key_name: meta
+  reasoning: true
 
 - model_id: qwen
-  model_name: qwen3.7-max-preview
+  model_name: qwen3.8-max
   api_base: "https://dashscope-intl.aliyuncs.com/compatible-mode/v1"
   api_key_name: alibaba
 
 - model_id: glm
-  model_name: glm-5.2
+  model_name: glm-5.3
   api_base: "https://api.z.ai/api/paas/v4/"
   api_key_name: glm
+  reasoning: true
 
 - model_id: claude
-  model_name: claude-opus-4-6
+  model_name: claude-opus-5
   api_base: "https://api.anthropic.com/v1/"
   api_key_name: anthropic
+  reasoning: true
 
 - model_id: gemini
   model_name: gemini-3.1-pro-preview
@@ -29,6 +32,7 @@
   api_key_name: deepseek
 
 - model_id: kimi
-  model_name: kimi-k2.6
+  model_name: kimi-k3
   api_base: "https://api.moonshot.ai/v1"
   api_key_name: moonshot
+  reasoning: true
