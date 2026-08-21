@@ -1,6 +1,6 @@
 # kube.nu — kubectl wrappers (edit with `hxk`).
-# Namespace lives on the current context; set it once with `kns` (defaults to
-# $env.KUBE_NS). All commands below then inherit it — no per-command -n needed.
+# Namespace lives on the current context. Set it once with `kns`, which defaults
+# to $env.KUBE_NS, and every command below inherits it without a per-command -n.
 
 def kns [ns?: string] {
   let ns = ($ns | default $env.KUBE_NS)
@@ -17,7 +17,7 @@ def kd  [...rest: string@kube-pods] { kubectl delete pods ...$rest }
 def kdp [...rest: string@kube-pods] { kubectl describe pods ...$rest }
 def ka  [...rest: string@kube-pods] { kubectl attach ...$rest }
 
-# Sorted pod list filtered by a name pattern; pass `w` as 2nd arg for wide output.
+# Sorted pod list filtered by a name pattern. Pass `w` as the 2nd arg for wide output.
 def ki [pattern: string@kube-pods, wide?: string] {
   let flags = (if $wide == "w" { ["--output=wide"] } else { [] })
   kubectl get pod "--sort-by={metadata.creationTimestamp}" ...$flags | grep $pattern

@@ -17,7 +17,7 @@ $env.config.keybindings ++= [
     event: { send: vichangemode, mode: normal }
   }
   {
-    # Ctrl-A: accept the entire autosuggestion (was accept-autosuggestion)
+    # Ctrl-A: accept the entire autosuggestion
     name: accept_hint
     modifier: control
     keycode: char_a
@@ -25,7 +25,7 @@ $env.config.keybindings ++= [
     event: { send: historyhintcomplete }
   }
   {
-    # Ctrl-S: accept a single word of the autosuggestion (was forward-bigword)
+    # Ctrl-S: accept a single word of the autosuggestion
     name: accept_hint_word
     modifier: control
     keycode: char_s
@@ -41,7 +41,7 @@ $env.config.history = {
     max_size: 100000      # Maximum number of history entries
 }
 
-# --- Completions (delegate external-command completions to fish) ---
+# --- Completions (external commands delegate to fish) ---
 let fish_completer = {|spans|
     let results = fish --command $"complete '--do-complete=($spans | str replace --all "'" "\\'" | str join ' ')'"
     | from tsv --flexible --noheaders --no-infer
@@ -62,9 +62,9 @@ $env.config.completions.external = {
   completer: $fish_completer
 }
 
-# override the built-in completion menu to drop the "| " marker
-# ($env.config.menus is empty by default; defining a menu named
-# completion_menu replaces the internal one)
+# Override the built-in completion menu to drop the "| " marker.
+# $env.config.menus is empty by default, and a menu named completion_menu
+# replaces the internal one.
 $env.config.menus ++= [{
     name: completion_menu
     only_buffer_difference: false
@@ -94,8 +94,8 @@ def hxk [] { hx ~/.config/nushell/kube.nu; exec nu }
 alias hxh = hx ~/.config/helix/config.toml
 alias hxl = hx ~/.config/helix/languages.toml
 
-# Auto-activate .venv on cd, deactivate when leaving its tree (ports
-# __auto_activate_venv). String-form hooks so `overlay use` parses at cd time.
+# Auto-activate .venv on cd, and deactivate when leaving its tree.
+# String-form hooks, so `overlay use` parses at cd time.
 $env.config.hooks.env_change.PWD = ($env.config.hooks.env_change.PWD? | default []) ++ [
   {
     condition: {|before, after| ('.venv/bin/activate.nu' | path exists) and (($env.VIRTUAL_ENV? | default '') != ($after | path join '.venv')) }
@@ -117,7 +117,7 @@ alias tf = tail -f
 
 # --- Restic (repo from $env.RESTIC_REPOSITORY) ---
 alias re = restic --verbose
-# `r b|s|p|f [extra]` — backup / snapshots / prune / forget (ports r.py)
+# `r b|s|p|f [extra]` — backup / snapshots / prune / forget
 def r [sub: string, extra?: string] {
   let base = (match $sub {
     "b" => ["backup", $env.HOME, "--exclude-file", $"($env.HOME)/.restic-excludes.txt"]
@@ -148,7 +148,7 @@ def yank-files [files: list<string>] {
 def yf [...files: string] { yank-files $files }
 def yg [] { yank-files (git ls-files | lines | where {|f| ($f | path type) == "file"}) }
 
-# Interactive regex replace across git-tracked files (ports rp.py).
+# Interactive regex replace across git-tracked files.
 def rp [pattern: string, repl: string] {
   for path in (git ls-files | lines | where {|f| ($f | path type) == "file"}) {
     let raw = (open --raw $path | into binary)
@@ -167,7 +167,7 @@ def rp [pattern: string, repl: string] {
   }
 }
 
-# --- Upgrade everything (ports the `u` function) ---
+# --- Upgrade everything ---
 def u [] {
   brew upgrade -y
   brew autoremove
@@ -175,8 +175,8 @@ def u [] {
   uv tool upgrade --all
 }
 
-# Auto-attach tmux on interactive launch outside tmux (mirrors fish config).
-# Guarded by is-interactive so `nu -c ...` scripts are never hijacked.
+# Auto-attach tmux on interactive launch outside tmux.
+# Guarded by is-interactive, so `nu -c ...` scripts launch without it.
 if $nu.is-interactive and ($env.TMUX? | is-empty) {
   exec tmux new -A -s main
 }
