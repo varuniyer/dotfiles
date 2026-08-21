@@ -3,6 +3,11 @@
 !/.gitattributes
 !/README.md
 
+!/.claude
+/.claude/**
+!/.claude/skills
+!/.claude/skills/**
+
 !/.config
 /.config/**
 !/.config/nushell
