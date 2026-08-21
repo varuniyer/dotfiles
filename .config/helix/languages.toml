@@ -6,7 +6,6 @@ executable = "latexmk"
 args = [
   "-pdf",
   "-interaction=nonstopmode",
-  "-synctex=1",
   "-outdir=build",
   "%f"
 ]
