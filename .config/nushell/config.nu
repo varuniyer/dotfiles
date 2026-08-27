@@ -1,6 +1,9 @@
 $env.PATH = [
     "~/.local/bin",
+    "~/.cargo/bin"
     "/home/linuxbrew/.linuxbrew/bin",
+    "/home/linuxbrew/.linuxbrew/lib/ruby/gems/4.0.0/bin",
+    "/usr/local/cuda/bin/"
 ] ++ $env.PATH
 $env.EDITOR = "hx"
 $env.VIRTUAL_ENV_DISABLE_PROMPT = true

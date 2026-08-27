@@ -20,6 +20,7 @@ These apply to every language and every surface: application code, SQL, schema d
 - A conditional operation and the primitive it wraps take distinct names. Suffix the caller with what gates it rather than reusing the primitive's own word.
 - Mark the exception, not the default. The common case is bare and the variant carries the mark, and the mark says what differs.
 - Implementation vocabulary stays in the implementation. Words naming where a value sits in some machine do not belong in the description of what it is.
+- A name the project has recorded as settled binds every later edit. The rejected side reads naturally at its own site, so check the record before coining or reviving a name.
 
 ## Duplication and abstraction
 
