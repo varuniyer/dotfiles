@@ -1,6 +1,6 @@
 ---
 name: audit
-description: Fan out subagents to sweep the repository for violations of my code and prose rules, collect them in data/findings.md, and hand back a questionnaire covering the ambiguous cases. Load whenever I ask for a rule-violation audit, a style sweep, or a findings pass over the repo or the paper.
+description: Fan out subagents to sweep the repository for violations of my code and prose rules, collect them in data/findings.md, and hand back a questionnaire covering the ambiguous cases. Load whenever I ask for a rule-violation audit, a style sweep, or a findings pass over a repo or a document it holds.
 ---
 
 # Auditing a repo against the rules
@@ -15,7 +15,7 @@ Read the full text of the `code` and `prose` skills before writing a single agen
 
 One agent per coherent file set. A set is coherent when its agent can read every file in it completely, so size the sets by what fits rather than by subsystem tidiness. Split a file too large to read whole into line ranges at its own section boundaries. Tell each agent which range it owns, and that it may grep the whole file to check whether a name is bound outside that range.
 
-Cover every tracked surface. Application code, schema, build files, manifests, configuration, type stubs, documentation, and the paper all count, since the `code` skill names all of them and the `prose` skill governs every comment inside them.
+Cover every tracked surface. Application code, schema, build files, manifests, configuration, type stubs, documentation, and any manuscript the repo holds all count, since the `code` skill names all of them and the `prose` skill governs every comment inside them.
 
 Add one cross-cutting agent for the naming rule. One thing under two names hides between files, and neither name looks wrong at its own site, so a single-surface agent cannot see it. That agent inventories what each concept is called on every surface and reports the collisions with counts.
 
@@ -31,7 +31,7 @@ Use the `general-purpose` subagent type. State in every prompt that the agent is
 - The deliberate splits, listed outright. Where the project has ruled that one concept takes a different name in code than in prose, the cross-cutting agent reports every one of them unless told.
 - The shape of a finding: a file and line, a verbatim quote, the rule cited by skill and section, the problem in two sentences, and the concrete replacement.
 - The ban on style preference. A finding no rule states is noise, and noise is what makes a long report unreadable.
-- The counting rule. Count with a script over the raw text rather than a bare regex, which undercounts whatever it was not written for. Before calling anything dead, check every reader directory the layout names, the paper and ad-hoc queries included.
+- The counting rule. Count with a script over the raw text rather than a bare regex, which undercounts whatever it was not written for. Before calling anything dead, check every reader directory the layout names, a manuscript and ad-hoc queries included.
 - A QUESTIONS section, for cases where two readings of the rules give materially different fixes, or where the fix collides with a settled name.
 - An instruction to name the checks that came back clean. A clean surface is a result, and it is the only thing separating a rule the agent checked from one it forgot.
 - The output path, one file per agent in the session scratchpad, and a per-agent finding prefix so a merged finding traces back to its auditor.
