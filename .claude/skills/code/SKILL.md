@@ -21,6 +21,7 @@ These apply to every language and every surface: application code, SQL, schema d
 - Mark the exception, not the default. The common case is bare and the variant carries the mark, and the mark says what differs.
 - Implementation vocabulary stays in the implementation. Words naming where a value sits in some machine do not belong in the description of what it is.
 - A name the project has recorded as settled binds every later edit. The rejected side reads naturally at its own site, so check the record before coining or reviving a name.
+- A column or field of an enum type takes the enum's stem as its name, so `thing_t` sits in `thing`. No name carries a `_kind`, `_type`, or `_family` suffix, which is a second name for what the type already says. Where prose needs the word, it is "type", never "kind".
 
 ## Duplication and abstraction
 
@@ -41,6 +42,26 @@ These apply to every language and every surface: application code, SQL, schema d
 - A comment carries a semantic constraint or a gotcha the code cannot express. Nothing else.
 - Never restate what the line below shows, never narrate rationale, rejected alternatives, load order, file placement, or another library's internals, and never record the change that produced the code.
 - Comments attach to units, not to fields. A per-field comment is a sign the field is misnamed.
+- Cap a doc comment at 3 lines. A schema object takes one comment of at most 2 lines above the statement creating it, stating what the object holds beyond what its name says. An enum whose members are its definition and a trigger named for what it fires on both earn none.
+
+## Python
+
+- All imports sit at module top level, never inside a function. Restructure a genuine cycle.
+- Never use `typing.cast` or `# type: ignore`. Use the already-typed surface, or add or extend a stub.
+- A stub changes in the same edit as the surface it covers, never as a follow-up. A stub default is spelled `= ...`.
+- A vocabulary the database holds as an enum gets a matching `Literal` union, and fields carry it instead of `str`. The database already validates the value on insert, so what the union adds is the comparison check. A comparison against a value outside it is a type error, where a bare `str` lets the branch fall silently through.
+- A formatter's config states a line width only where the tool's default differs from the project's. Width never decides a refactor, since the formatter reflows whatever an inlined expression becomes.
+
+## SQL
+
+- The database owns concurrency protection, locking, and atomic multi-step writes, in its own functions and triggers. Correctness must hold for a write typed by hand, with no application code in the way.
+- Writers fail loudly on collision. Never write `ON CONFLICT`.
+- Never use a CTE where a separate view does the same work as fast or faster.
+- Use LATERAL when the inner query returns multiple rows or columns per outer row. Put a correlated scalar subquery in the SELECT list only against a small outer.
+- Write `ARRAY(SELECT ... ORDER BY ...)` instead of `array_agg(... ORDER BY ...)`, except when a grouped or LATERAL query computes multiple aggregates over the same rows in one scan. A FROM-less subquery is pulled up and its expression substituted at every reference, so the array builds once per reference and the scan repeats.
+- An EXISTS probe is written `SELECT FROM`, never `SELECT 1 FROM`.
+- An ad-hoc schema change is one transaction, since a run that stops halfway leaves a schema nobody wrote down. Read what a rebuilt object should look like out of the catalog rather than retyping it. Dry-run the whole transaction against a scratch schema first, and carry a `lock_timeout` so it fails fast instead of queuing a lock request every later reader waits behind.
+- When a column change collides with a dependent view, drop the view and recreate it from its source definition rather than fighting `CREATE OR REPLACE VIEW` column rules.
 
 ## Changing existing code
 
@@ -52,10 +73,16 @@ These apply to every language and every surface: application code, SQL, schema d
 
 ## Verification
 
+- Assert meaningful invariants or compare independently obtained results. Do not assert literals or restate the construction being checked.
 - Type checkers and linters read past the inside of a string. A query naming a column that moved passes every check and fails on first execution. Run the thing.
 - A pure refactor is provable. Capture the output before, capture it after, and diff them. If the change was supposed to alter nothing, prove it altered nothing.
 - Put an assertion in every rewrite script, so each substitution matches the count you expect. A silent zero-match is how a rename half-lands.
 - Counting with a regex undercounts whatever the regex was not written for. Count with a script over the raw text, and treat a surprising count as a bug in the count.
+- Confirm a surface before calling it. Read a table's columns and types, or a function's signature, before writing the query or the call.
+- Probe a destructive database change inside an explicit `BEGIN`/`ROLLBACK`. A rollback on an autocommit connection does nothing, and a sequence advances across a rollback either way.
+- Never hand-edit a patch file. A hunk body edited without recomputing its `@@` counts is malformed. Apply the patches to pristine copies, edit the results, regenerate each patch with `diff`, and confirm every patch applies with zero failures and zero offsets.
+- A rewritten file and a loaded edit are two facts. An A/B comparison reads which variant each pass loaded off the running code object, never off the file, and asserts the two passes differ before it compares their outputs.
+- Never add timing instrumentation to a run whose speed is being measured, since the instrument perturbs the measurement. Compare what unmodified runs already record.
 - A name absent from a file is not therefore free. A convention can reserve it without ever using it.
 - Independent review finds what self-review does not, especially in a pass whose whole point was removing things. Get one before calling a large cleanup done.
 
@@ -63,4 +90,5 @@ These apply to every language and every surface: application code, SQL, schema d
 
 - Say plainly what failed, what you skipped, and what you could not check. A summary that omits a failure is worse than no summary.
 - Never report as verified what you inferred. If it was not run, say it was not run.
+- Query the data before making a claim the data decides, and never guess a factual answer. If the data is missing, say so and say what run would supply it.
 - Correct an error in one sentence and continue. Do not narrate the mistake.

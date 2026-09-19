@@ -112,6 +112,7 @@ Section Redundancy cuts whole clauses and paragraphs. These cut words.
 - Real rules make English English. Social rules mark standard from nonstandard. Invented rules were made up by grammarians, and they go whenever they cost clarity.
 - Ignore the folklore: never open with "and" or "but", never split an infinitive, never end on a preposition. Follow one only where the sentence is better for it.
 - Singular "they" is correct. Use it.
+- American spelling throughout, across the whole -ize, -ization, -yze, -or, and -er families: summarize, normalization, analyze, behavior, center, modeling.
 - Where a rule and the reader conflict, the reader wins. Correctness serves communication and never outranks it.
 - The house rules in this file are not folklore. Follow them.
 
@@ -132,18 +133,23 @@ Section Redundancy cuts whole clauses and paragraphs. These cut words.
 - Cut a qualifier that names no metric the work actually reports (e.g. "holistic quality" beside metrics that are all named elsewhere).
 - Scope claims to what was tested ("among the settings we test") instead of stating them as absolutes. A commit message says what changed, never that it is better unless a measurement says so.
 - State what the statistics show and stop there. Mechanistic explanations require data that probes the mechanism.
+- Print the raw p-value beside every adjusted one. A table caption states the sample count behind its entries.
+- A commit message says what changed, specifically. Never "update files".
 
 ## Sources
 
 - Quote accurately, paraphrase into your own sentence structure rather than swapping synonyms, and cite in the form the field uses.
 - Decide three things per source: how much to bring in, whether to quote, paraphrase, or summarize, and how to attribute it.
 - Quote when the wording is the evidence. Paraphrase when the content is. Summarize when only the conclusion bears on your argument.
+- A bibliography entry fetched from an official source stays verbatim, provenance fields and formatting included. Only a duplicate or a wrong value is worth reporting.
 
 ## Structure (documents)
 
 - Before trimming a formal result (a lemma, proposition, or named mechanism), check whether it derives something not already visible on the page such as an implicit threshold recovered from an unconditional rule. A result that instead re-narrates a fact already stated in closed form is a cut. A result that derives something is load-bearing even when verbose, so tighten the prose around it instead.
 - A derivation or result used by exactly one downstream argument belongs colocated with that argument, not in a shared section implying broader relevance.
 - Describe the current protocol directly. Delete descriptions of superseded intermediate states instead of narrating the history.
+- A table contains only applicable cells. Separate tables or trim rows and columns wherever a shared layout would need `n/a`.
+- A writeup for an advisor or reviewer contains zero manufactured discussion items. Include only the questions the author flagged.
 
 An introduction runs shared context, then the problem, then the point.
 
