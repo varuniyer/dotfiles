@@ -16,12 +16,13 @@ These apply to every language and every surface: application code, SQL, schema d
 ## Naming
 
 - One thing carries one name across every surface it crosses, and one name carries one thing. A second name is a defect even when both are apt, because the two drift and nothing raises.
-- Name a thing by what it does, never by its role in a comparison, its position in a pipeline, or the category it belongs to. Coining a category noun for a branch or a conjunction of conditions spreads that same defect across a file.
+- Name a thing by what it does, never by its role in a comparison, its position in a pipeline, or its type. Coining a type label for a branch or a conjunction of conditions spreads that same defect across a file.
 - A conditional operation and the primitive it wraps take distinct names. Suffix the caller with what gates it rather than reusing the primitive's own word.
 - Mark the exception, not the default. The common case is bare and the variant carries the mark, and the mark says what differs.
 - Implementation vocabulary stays in the implementation. Words naming where a value sits in some machine do not belong in the description of what it is.
 - A name the project has recorded as settled binds every later edit. The rejected side reads naturally at its own site, so check the record before coining or reviving a name.
-- A column or field of an enum type takes the enum's stem as its name, so `thing_t` sits in `thing`. No name carries a `_kind`, `_type`, or `_family` suffix, which is a second name for what the type already says. Where prose needs the word, it is "type", never "kind".
+- A column or field of an enum type takes the enum's stem as its name, so `thing_t` sits in `thing`. No name carries a `_kind`, `_type`, or `_family` suffix, which is a second name for what the type already says.
+- In prose, use "type" for a classification.
 
 ## Duplication and abstraction
 

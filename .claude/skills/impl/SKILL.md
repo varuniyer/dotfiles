@@ -13,7 +13,7 @@ Group claims by the file or subsystem they touch, one agent per group. A group i
 
 Six to eight groups is the usual shape for a twenty-claim list. Never one agent per claim.
 
-Use the `Explore` subagent type. State in every prompt that the agent is read-only and edits nothing.
+Use the `Explore` subagent type. State in every prompt that the reviewed files are read-only and that the agent may write only its assigned report and verification scripts in the session scratchpad.
 
 ## What each agent prompt carries
 
@@ -31,8 +31,8 @@ Use the `Explore` subagent type. State in every prompt that the agent is read-on
 
 Report one line per claim: number, verdict, and the fact that decided it. Rank by what is now safe to act on. Name explicitly the claims that were REFUTED and what killed them, since those are the ones the review pass got wrong and would repeat.
 
-Separate the claims that survive verification from the claims that survive judgment. A confirmed single-use helper whose inlining would hurt the call site is confirmed and still not worth doing. Say so.
+Separate the claims that survive verification from the claims that survive judgment. A helper with one caller can have several references. Count those references before recommending inlining.
 
-Findings that need a run rather than a read go in their own list at the end, with the run that would settle each.
+Run available checks within the authorized task. Findings whose required run, measurement, or data remains unavailable go in their own list at the end, with the check that would settle each.
 
 Then stop. Do not implement until asked. When implementation is asked for, verify a schema or runtime path change by running it, never by ruff and basedpyright alone. Exercise the change locally against the venv, and never by cloning the branch into a pod.

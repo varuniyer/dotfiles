@@ -19,7 +19,7 @@ Use the `general-purpose` subagent type. These agents need `psql` and `.venv/bin
 - Do not edit any files. Never edit `latex/custom.bib`.
 - Every sub-assertion spelled out as its own question, phrased as what to check rather than what the reviewer said. A reviewer's compression of the paper is not the paper.
 - The verdict scale: CONFIRMED / PARTLY TRUE / FALSE / UNVERIFIABLE, per sub-assertion, with line numbers and verbatim quotes for paper claims and `file:line` for code claims.
-- One truthful rebuttal sentence per sub-assertion, or the statement that no truthful rebuttal exists. A rebuttal sentence is material for answering the reviewer, never text destined for the paper.
+- For a CONFIRMED or FALSE sub-assertion, give one truthful rebuttal sentence, or state that no truthful rebuttal exists. For an UNVERIFIABLE assertion, state what remains unknown and name the check that would settle it. Apply these instructions to the supported, refuted, and unresolved parts of PARTLY TRUE assertions. A rebuttal sentence is material for answering the reviewer, never text destined for the paper.
 - The instruction to be adversarial toward both the reviewer and the paper, and to report what is actually there.
 - For data claims, query the database. Where the data does not exist, say so plainly and name the run that would produce it. Never estimate a number the DB does not hold.
 - Mark the sharpest technical assertion in each cluster and tell the agent to nail that one exactly, quoting both code paths where the claim is a mismatch between two of them.
@@ -28,21 +28,22 @@ Use the `general-purpose` subagent type. These agents need `psql` and `.venv/bin
 
 ## Synthesis
 
-Sort findings by what they demand, not by the reviewer's order:
+Sort findings by what they demand, not by the reviewer's order. Place the supported, refuted, and unresolved parts of PARTLY TRUE assertions in the corresponding groups:
 
 1. Assertions that are FALSE, with the quote that refutes them. These cost nothing to answer.
 2. Assertions that are true and fixable in text. These are the edit list.
 3. Assertions that are true and need a run, a measurement, or unwritten code. These are the real gaps, and the ones where the reviewer has force.
+4. Assertions that are UNVERIFIABLE. State what remains unknown and name the check that would settle each.
 
-Before an assertion reaches the edit list, find where the paper already covers its subject. Three dispositions follow, and none of them adds a second site.
+Before an assertion reaches the edit list, find where the paper already covers its subject. Three dispositions follow, and none of them adds a second detailed statement of a claim.
 
 - The paper states it clearly and correctly. Close it under 1 with the quote. There is no edit.
-- The paper states it in a shape the reviewer did not expect, asserted where it should be argued, imprecise, overstated against what the work measures, or sitting where the argument does not reach it. Revise the site that already carries it. This is the common case and it is still one statement afterwards.
+- The paper states it in a shape the reviewer did not expect, asserted where it should be argued, imprecise, overstated against what the work measures, or sitting where the argument does not reach it. Revise the site that already carries it. This is the common case and it is still one detailed statement afterwards.
 - The paper states it nowhere. Now it is an edit candidate, gated by the test below.
 
 A missing statement becomes an edit only when a competent reader of the venue would be misled without it. Disclosures of the obvious never qualify: that a standard protocol is standard, that incomparable numbers were not compared, that a scoped-out method is out of scope, that a stated design choice is a design choice. A reviewer demanding an acknowledgment is making an assertion like any other, and the right disposition for most such demands is "true, obvious, no edit". The paper argues its claims, it does not narrate its innocence.
 
-A second statement of a claim the paper makes elsewhere is a redundancy defect rather than a fix, and it stays one when the reviewer asks for it directly. Reader-path arguments are how that redundancy gets justified, so treat "a reader reaching the table first would not know" as a reason to check the existing statement is right, never as a reason to state it twice.
+Keep each detailed claim at one site, even when the reviewer asks for it elsewhere. Abstracts and conclusions may summarize claims developed elsewhere, as the prose skill allows. Reader-path arguments are how repeated detail gets justified, so treat "a reader reaching the table first would not know" as a reason to check the existing statement is right, never as a reason to repeat its detail.
 
 Report where the paper contradicts the code, since that is the finding that outranks everything else in the list.
 

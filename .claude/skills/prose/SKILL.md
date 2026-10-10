@@ -1,6 +1,6 @@
 ---
 name: prose
-description: Writing and review rules for every kind of prose I write - paper and manuscript text, code comments, docstrings, commit messages, PR descriptions, docs, and chat replies. Load before drafting, editing, or reviewing any of it, and before any prose-cleanup pass.
+description: Writing and review rules for every type of prose I write - paper and manuscript text, code comments, docstrings, commit messages, PR descriptions, docs, and chat replies. Load before drafting, editing, or reviewing any of it, and before any prose-cleanup pass.
 ---
 
 # Prose
@@ -19,7 +19,7 @@ Obscurity is the standing temptation. Writing that is hard to read reads as inte
 - Match the difficulty of the prose to the difficulty of the idea and no further. Hard ideas earn hard sentences. Nothing else does.
 - A complex subject never excuses unclear writing. Expertise is not a license for opacity, and a field's conventional density is not a reason to reproduce it.
 - Read other people's obscurity charitably. Most of it is unintended and the writer cannot see it. Say so plainly when asked, and bring the rewrite with you.
-- Obscurity that hides responsibility differs in kind, not degree. Prose that buries who did what, softens a danger, or dissolves an agent into a passive is misconduct rather than clumsiness. Never write it, and name it when you review it.
+- Obscurity that hides responsibility differs qualitatively. Prose that buries who did what, softens a danger, or dissolves an agent into a passive is misconduct rather than clumsiness. Never write it, and name it when you review it.
 
 ## Drafting
 
@@ -73,6 +73,7 @@ Flow is what makes a passage readable, and cohesion is what makes flow.
 ## Positive framing
 
 - State what the thing does, not what it avoids. Scan for `not`, `no`, `did not`, `rather than`, `unlikely to`, `never` and convert each into the positive fact, preserving the empirical finding.
+- Keep precise prohibitions when positive wording would obscure the rule.
 - Standard property terms ("non-deterministic", "unsupervised") are fine.
 - Contrastive phrasing is allowed when both sides are live alternatives at the current moment. It is out when either side is a superseded version of the code, the document, or the data, since that drags in history the reader cannot act on. Describe a to c, never a to b to c.
 - A comment or commit message describes what the code does today. No fixup, justification, migration, or legacy commentary.
@@ -81,7 +82,7 @@ Flow is what makes a passage readable, and cohesion is what makes flow.
 
 - Cut clauses that restate or elaborate the sentence's own point rather than adding information. State the point once.
 - Collapse a claim-then-elaboration pair into one sentence only when the merge stays grammatical. Reread the merged sentence for subject-verb agreement and dangling negation before keeping it.
-- Delete a paragraph outright, rather than trimming it, when it repeats a claim made elsewhere in the document.
+- Delete a paragraph outright, rather than trimming it, when it repeats a claim made elsewhere in the document. Abstracts and conclusions may summarize claims developed elsewhere.
 - Cut a comment that restates what the line below it already shows. Comments carry only semantic constraints and gotchas the code cannot express. Never narrate design rationale, rejected alternatives, load order, file placement, or another library's or file's internal mechanics.
 - Cut degree adverbs and intensifying adjectives ("purely", "substantially", "genuinely", "directly") when the sentence means the same thing without them. Keep one only when removing it erases a real contrast, or when the words sit inside quoted experimental text (prompts, code listings), where changing them changes the experiment.
 
@@ -92,7 +93,6 @@ Section Redundancy cuts whole clauses and paragraphs. These cut words.
 - Delete meaningless words and doubled words.
 - Delete what the reader can infer.
 - Replace a phrase with a word. "Carefully read what you have written" is "edit". "The one thing to do before anything else" is "first".
-- Turn negatives into affirmatives, as Positive framing already requires.
 - Cut hedges and stacked qualifiers. "There seems to be some evidence to suggest that the differences could derive from historical influences possibly traceable to X" is "Evidence suggests the differences stem from historical influences."
 - Cut adjectives and adverbs that add no meaning. "In my personal opinion, it is necessary that we should not ignore the opportunity to think over each and every suggestion offered" is "We should consider each suggestion."
 
@@ -112,13 +112,13 @@ Section Redundancy cuts whole clauses and paragraphs. These cut words.
 - Real rules make English English. Social rules mark standard from nonstandard. Invented rules were made up by grammarians, and they go whenever they cost clarity.
 - Ignore the folklore: never open with "and" or "but", never split an infinitive, never end on a preposition. Follow one only where the sentence is better for it.
 - Singular "they" is correct. Use it.
-- American spelling throughout, across the whole -ize, -ization, -yze, -or, and -er families: summarize, normalization, analyze, behavior, center, modeling.
+- American spelling throughout, including the suffixes -ize, -ization, -yze, -or, and -er: summarize, normalization, analyze, behavior, center, modeling.
 - Where a rule and the reader conflict, the reader wins. Correctness serves communication and never outranks it.
 - The house rules in this file are not folklore. Follow them.
 
 ## Naming
 
-- Do not coin or repeat a category noun (a "tier", a "hierarchy", a named "structure") for something that is a control-flow branch or a conjunction of conditions. Name the branch once, in the algorithm or the single canonical place that defines it, then refer to it everywhere else by what it does. A recurring proper-noun-like label for an if/else is the same defect as a restated clause, spread across the document.
+- Do not coin or repeat a type label (a "tier", a "hierarchy", a named "structure") for something that is a control-flow branch or a conjunction of conditions. Name the branch once, in the algorithm or the single canonical place that defines it, then refer to it everywhere else by what it does. A recurring proper-noun-like label for an if/else is the same defect as a restated clause, spread across the document.
 - Name a branch or variant by what it does, never by its role in a comparison. "Fallback" is wrong for a branch that runs a full rule.
 - Never call an ablation or method variant an "arm".
 - One concept carries one name for the whole document, and one name carries one concept. A second name is a defect even when both are apt, because the reader has to discover they are the same thing and the two drift once they are apart. The inverse is as bad, one name covering several things, and it hides better, since each site reads fine on its own. A project's `AGENTS.md` records the instances that project has actually paid for.
@@ -129,7 +129,7 @@ Section Redundancy cuts whole clauses and paragraphs. These cut words.
 
 ## Claims
 
-- Every claim in a summary position (abstract, Contributions list, Conclusion, commit message subject, PR description) must correspond to a measured result or a specific tested scope.
+- Every claim in a summary position (abstract, Contributions list, Conclusion, subject of a commit message, PR description) must correspond to a measured result or a specific tested scope.
 - Cut a qualifier that names no metric the work actually reports (e.g. "holistic quality" beside metrics that are all named elsewhere).
 - Scope claims to what was tested ("among the settings we test") instead of stating them as absolutes. A commit message says what changed, never that it is better unless a measurement says so.
 - State what the statistics show and stop there. Mechanistic explanations require data that probes the mechanism.
