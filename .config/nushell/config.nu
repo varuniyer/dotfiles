@@ -5,6 +5,8 @@ $env.PATH = [
     "/home/linuxbrew/.linuxbrew/lib/ruby/gems/4.0.0/bin",
     "/usr/local/cuda/bin/"
 ] ++ $env.PATH
+
+$env.TMPDIR = ($env.HOME | path join "tmp")
 $env.EDITOR = "hx"
 $env.VIRTUAL_ENV_DISABLE_PROMPT = true
 $env.PROMPT_INDICATOR_VI_INSERT = ""
@@ -117,6 +119,28 @@ def gpa [] { git push origin main; git push github main }
 alias apc = uvx --from git+https://github.com/acl-org/aclpubcheck aclpubcheck --paper_type long
 alias kgr = chmod go-r ~/Documents/.config/kube/config
 alias tf = tail -f
+
+# Quote the whole command when it contains a pipeline or quoted arguments.
+def --wrapped m [
+  --duration (-d): duration = 1sec
+  ...args
+] {
+  let cmd = $args | into string | str join ' '
+  if ($cmd | str trim | is-empty) {
+    error make {msg: 'm: provide a command to run'}
+  }
+
+  loop {
+      let last_run = (date now)
+      let out = ^nu --config $nu.config-path --commands $cmd | complete
+
+      clear --keep-scrollback
+      print $"Running every ($duration) on '(hostname)': `($cmd)`"
+      print $out.stdout $out.stderr
+      print $"Last run: ($last_run) | Exit code: ($out.exit_code)"
+      sleep ($last_run + $duration - (date now))
+  }
+}
 
 # --- Restic (repo from $env.RESTIC_REPOSITORY) ---
 alias re = restic --verbose
