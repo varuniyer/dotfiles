@@ -12,6 +12,13 @@ git remote add origin https://github.com/varuniyer/dotfiles.git
 git pull origin main
 ```
 
+In Nushell, link the shared skills into `~/.codex/skills`:
+
+```nu
+mkdir ~/.codex/skills
+^ln -s ...(glob ~/.claude/skills/*/SKILL.md | path dirname) ~/.codex/skills/
+```
+
 ## File tree
 ```
 ~

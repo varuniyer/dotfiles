@@ -9,7 +9,7 @@ description: Fan out subagents to verify and apply the findings in data/findings
 
 ## Settle the ambiguities before fanning out
 
-Read the whole file first and collect every finding whose fix the rules leave open. Ask about all of them in one pass through `AskUserQuestion`, before a single agent launches. An answer arriving mid-flight never reaches the agents that already finished, and their work then rests on a reading the author replaced.
+Read the whole file first and collect every finding whose fix the rules leave open. Ask about all of them in one questionnaire, before a single agent launches. An answer arriving mid-flight never reaches the agents that already finished, and their work then rests on a reading the author replaced.
 
 Where the audit shipped a questionnaire, its answers are the input. Carry each answer verbatim into the prompt of the agent whose findings it governs, rather than paraphrasing it.
 
@@ -17,19 +17,18 @@ A finding whose fix would change behavior is a question and never a default. A s
 
 ## Order the findings, then parallelize each level
 
-The audit already partitioned the files, one label per disjoint set, so the labels are the nodes and no repartitioning is needed. Two shapes need care. A cross-surface label edits files every other label owns, so it takes a level to itself. Labels splitting one file by line range are one writer between them, so they collapse into a single node.
+The audit already partitioned the files, one label per disjoint set. Before building the dependency graph, merge labels governed by the same answer under one owner. Also merge labels splitting one file by line range. Check the merged findings for conflicting edits and ask about any conflict the settled answers leave unresolved. Each resulting label is one node. A cross-surface label edits files every other label owns, so it takes a level to itself.
 
-Edges run from the fix that must land first to the fix that must land after, and they come from three places.
+Edges run from the fix that must land first to the fix that must land after, and they come from two places.
 
 - A cross-file rename precedes every local edit in the files it renames. An edit written against the old name lands on text the rename already moved.
 - A finding whose quote sits inside a passage another finding rewrites comes after that one.
-- Two findings the same answer governs share an edge, so one reading reaches both rather than two agents interpreting it apart.
 
 A cycle means two findings each presume the other. Merge them into one node under one owner rather than choosing an order.
 
 Then walk the graph in topological levels. A level is an antichain of labels, and since the labels partition the files, every label in it writes files no other label in it touches. The whole level fans out at once, one agent per label, and the pass costs as many rounds as the graph is deep rather than as many as it has labels.
 
-Levels make attribution cheap. Run the fast gates after each level rather than once at the end, and a break belongs to the level that just landed.
+Levels make attribution cheap. Run the checks recorded for each level after it lands, and a break belongs to that level.
 
 Run available checks within the authorized task. Findings whose required run, measurement, or data remains unavailable sit outside the graph. They go on a deferred list, each with the check that would settle it, and none is ever guessed closed.
 
@@ -60,9 +59,11 @@ A later level reads files an earlier level changed, so line numbers have moved. 
 
 ## Verification
 
-Run the fast gates after every level, and the full suite once the last level lands. A formatter, a linter, and a type checker between them read past the inside of every string, so they prove nothing about a query, a template, or a manifest key. A change reaching one of those is verified by running the thing that reads it.
+Before editing, read the repository's instructions for formatting, linting, tests, and other checks. Record the exact commands required after each level and after the full pass. Run the recorded commands at their stated stages, and name any required command that could not run.
 
-Prove a pure refactor inert. Capture the output before, capture it after, and diff them. A fix claiming to alter nothing owes that diff.
+A formatter, a linter, and a type checker between them read past the inside of every string, so they prove nothing about a query, a template, or a manifest key. A change reaching one of those is verified by running the thing that reads it.
+
+Verify refactors with the before-and-after comparisons required by the code skill. Include the differences and the cases checked in the report.
 
 Where a document carries its own check target, run it and report what it flags.
 

@@ -13,7 +13,7 @@ Group claims by the file or subsystem they touch, one agent per group. A group i
 
 Six to eight groups is the usual shape for a twenty-claim list. Never one agent per claim.
 
-Use the `Explore` subagent type. State in every prompt that the reviewed files are read-only and that the agent may write only its assigned report and verification scripts in the session scratchpad.
+Use agents that can read the assigned files, run verification checks, and write their reports. State in every prompt that the reviewed files are read-only and that the agent may write only its assigned report and verification scripts in the session scratchpad.
 
 ## What each agent prompt carries
 

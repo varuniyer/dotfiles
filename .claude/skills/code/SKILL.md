@@ -33,7 +33,7 @@ These apply to every language and every surface: application code, SQL, schema d
 
 ## Defaults and edges
 
-- Inactive means absent. Use the language's null and branch on it, never a magic sentinel inside the valid range.
+- Represent an absent optional value with the language's null and check for null before using it. Never use a value from the valid range to mean disabled. Booleans are never optional. A Boolean may control whether an optional value is set.
 - Thresholds compare inclusively, so the extreme value is a true no-op.
 - Constraints guard the human writing a row by hand, not the code path. Keep a check that today's only writer cannot violate.
 - Fix a bug where it originates. A defensive default downstream hides it and keeps it.
@@ -42,7 +42,7 @@ These apply to every language and every surface: application code, SQL, schema d
 
 - A comment carries a semantic constraint or a gotcha the code cannot express. Nothing else.
 - Never restate what the line below shows, never narrate rationale, rejected alternatives, load order, file placement, or another library's internals, and never record the change that produced the code.
-- Comments attach to units, not to fields. A per-field comment is a sign the field is misnamed.
+- Explain a field's purpose through its name. Put any necessary comment about the field in the documentation for its containing class, record, or table.
 - Cap a doc comment at 3 lines. A schema object takes one comment of at most 2 lines above the statement creating it, stating what the object holds beyond what its name says. An enum whose members are its definition and a trigger named for what it fires on both earn none.
 
 ## Python
@@ -58,7 +58,7 @@ These apply to every language and every surface: application code, SQL, schema d
 - The database owns concurrency protection, locking, and atomic multi-step writes, in its own functions and triggers. Correctness must hold for a write typed by hand, with no application code in the way.
 - Writers fail loudly on collision. Never write `ON CONFLICT`.
 - Never use a CTE where a separate view does the same work as fast or faster.
-- Use LATERAL when the inner query returns multiple rows or columns per outer row. Put a correlated scalar subquery in the SELECT list only against a small outer.
+- Use LATERAL when the inner query returns multiple rows or columns per outer row. Check correlated scalar subqueries in the SELECT list with execution plans and measured runtimes on representative data at expected outer-row counts. Use LATERAL or a CTE when it simplifies redundant work.
 - Write `ARRAY(SELECT ... ORDER BY ...)` instead of `array_agg(... ORDER BY ...)`, except when a grouped or LATERAL query computes multiple aggregates over the same rows in one scan. A FROM-less subquery is pulled up and its expression substituted at every reference, so the array builds once per reference and the scan repeats.
 - An EXISTS probe is written `SELECT FROM`, never `SELECT 1 FROM`.
 - An ad-hoc schema change is one transaction, since a run that stops halfway leaves a schema nobody wrote down. Read what a rebuilt object should look like out of the catalog rather than retyping it. Dry-run the whole transaction against a scratch schema first, and carry a `lock_timeout` so it fails fast instead of queuing a lock request every later reader waits behind.
@@ -74,9 +74,9 @@ These apply to every language and every surface: application code, SQL, schema d
 
 ## Verification
 
-- Assert meaningful invariants or compare independently obtained results. Do not assert literals or restate the construction being checked.
+- Assert meaningful invariants or compare results with expectations established independently of the implementation. Do not write assertions that test only constants or reproduce the calculation being tested.
 - Type checkers and linters read past the inside of a string. A query naming a column that moved passes every check and fails on first execution. Run the thing.
-- A pure refactor is provable. Capture the output before, capture it after, and diff them. If the change was supposed to alter nothing, prove it altered nothing.
+- For a pure refactor, run the old and new implementations with the same inputs and starting state. Capture and diff their output, and compare the returned values, raised errors, and changed files or database rows that the refactor can affect. Report the differences, the cases checked, and any behavior the comparison did not cover.
 - Put an assertion in every rewrite script, so each substitution matches the count you expect. A silent zero-match is how a rename half-lands.
 - Counting with a regex undercounts whatever the regex was not written for. Count with a script over the raw text, and treat a surprising count as a bug in the count.
 - Confirm a surface before calling it. Read a table's columns and types, or a function's signature, before writing the query or the call.

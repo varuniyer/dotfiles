@@ -75,7 +75,7 @@ Flow is what makes a passage readable, and cohesion is what makes flow.
 - State what the thing does, not what it avoids. Scan for `not`, `no`, `did not`, `rather than`, `unlikely to`, `never` and convert each into the positive fact, preserving the empirical finding.
 - Keep precise prohibitions when positive wording would obscure the rule.
 - Standard property terms ("non-deterministic", "unsupervised") are fine.
-- Contrastive phrasing is allowed when both sides are live alternatives at the current moment. It is out when either side is a superseded version of the code, the document, or the data, since that drags in history the reader cannot act on. Describe a to c, never a to b to c.
+- Describe the current behavior directly. Use a comparison only when both alternatives remain under consideration. Omit superseded versions of the code, document, or data.
 - A comment or commit message describes what the code does today. No fixup, justification, migration, or legacy commentary.
 
 ## Redundancy
@@ -113,8 +113,6 @@ Section Redundancy cuts whole clauses and paragraphs. These cut words.
 - Ignore the folklore: never open with "and" or "but", never split an infinitive, never end on a preposition. Follow one only where the sentence is better for it.
 - Singular "they" is correct. Use it.
 - American spelling throughout, including the suffixes -ize, -ization, -yze, -or, and -er: summarize, normalization, analyze, behavior, center, modeling.
-- Where a rule and the reader conflict, the reader wins. Correctness serves communication and never outranks it.
-- The house rules in this file are not folklore. Follow them.
 
 ## Naming
 

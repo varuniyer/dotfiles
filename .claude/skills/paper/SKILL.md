@@ -11,7 +11,7 @@ The input is a set of assertions about the paper, usually a hostile review. Each
 
 Group them into clusters by the argument they attack, one agent per cluster. Six clusters is the usual shape for a full review. Keep the reviewer's own numbering inside each cluster (1a, 1b, ...) so the synthesis maps back to the review.
 
-Use the `general-purpose` subagent type. These agents need `psql` and `.venv/bin/python`, not only file reads.
+Use agents that can read the assigned files and run `psql` and `.venv/bin/python`.
 
 ## What each agent prompt carries
 

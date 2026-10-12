@@ -19,7 +19,7 @@ Cover every tracked surface. Application code, schema, build files, manifests, c
 
 Add one cross-cutting agent for the naming rule. One thing under two names hides between files, and neither name looks wrong at its own site, so a single-surface agent cannot see it. That agent inventories what each concept is called on every surface and reports the collisions with counts.
 
-Use the `general-purpose` subagent type. State in every prompt that the reviewed files are read-only and that the agent may write only its assigned report and verification scripts in the session scratchpad.
+Use agents that can read the assigned files, run verification checks, and write their reports. State in every prompt that the reviewed files are read-only and that the agent may write only its assigned report and verification scripts in the session scratchpad.
 
 ## What each agent prompt carries
 
@@ -55,7 +55,7 @@ Carry the clean checks forward. Say which surfaces came back clean and which rul
 
 ## The questionnaire
 
-One entry per genuine ambiguity, and none for a case the rules already settle. Each entry gives the context, the options, and what each option costs at the sites it touches. Put the questions gating the most findings through `AskUserQuestion` and leave the rest in the file.
+One entry per genuine ambiguity, and none for a case the rules already settle. Each entry gives the context, the options, and what each option costs at the sites it touches. Ask the user the questions gating the most findings and leave the rest in the file.
 
 Never guess a settled name. Where an answer would coin one, that is a question and never a default.
 
