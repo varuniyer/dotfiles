@@ -33,7 +33,7 @@ These apply to every language and every surface: application code, SQL, schema d
 
 ## Defaults and edges
 
-- Represent an absent optional value with the language's null and check for null before using it. Never use a value from the valid range to mean disabled. Booleans are never optional. A Boolean may control whether an optional value is set.
+- Represent optional values with an option type and check for absence before using the contained value. Never use a value from the valid range to mean disabled. Booleans are never optional. A Boolean may control whether an optional value is set.
 - Choose comparisons to match the intended boundary behavior. Check equality and endpoint cases explicitly.
 - Constraints guard the human writing a row by hand, not the code path. Keep a check that today's only writer cannot violate.
 - Fix a bug where it originates. A defensive default downstream hides it and keeps it.
@@ -60,7 +60,7 @@ These apply to every language and every surface: application code, SQL, schema d
 - Prefer a subquery at the use site for a query referenced once. Keep a single-use CTE only when its SQL semantics are required or representative execution plans and measured runtimes show a benefit.
 - Never use a CTE where a separate view does the same work as fast or faster.
 - Use LATERAL when the inner query returns multiple rows or columns per outer row. Check correlated scalar subqueries in the SELECT list with execution plans and measured runtimes on representative data at expected outer-row counts. Use LATERAL or a CTE when it simplifies redundant work.
-- Write `ARRAY(SELECT ... ORDER BY ...)` instead of `array_agg(... ORDER BY ...)`, except when a grouped or LATERAL query computes multiple aggregates over the same rows in one scan. A FROM-less subquery is pulled up and its expression substituted at every reference, so the array builds once per reference and the scan repeats.
+- Write `ARRAY(SELECT ... ORDER BY ...)` instead of `array_agg(... ORDER BY ...)`, except when a grouped or LATERAL query computes multiple aggregates over the same rows in one scan.
 - An EXISTS probe is written `SELECT FROM`, never `SELECT 1 FROM`.
 - An ad-hoc schema change is one transaction, since a run that stops halfway leaves a schema nobody wrote down. Read what a rebuilt object should look like out of the catalog rather than retyping it. Dry-run the whole transaction against a scratch schema first, and carry a `lock_timeout` so it fails fast instead of queuing a lock request every later reader waits behind.
 - When a column change collides with a dependent view, drop the view and recreate it from its source definition rather than fighting `CREATE OR REPLACE VIEW` column rules.
@@ -79,7 +79,6 @@ These apply to every language and every surface: application code, SQL, schema d
 - Type checkers and linters read past the inside of a string. A query naming a column that moved passes every check and fails on first execution. Run the thing.
 - For a pure refactor, run the old and new implementations with the same inputs and starting state. Capture and diff their output, and compare the returned values, raised errors, and changed files or database rows that the refactor can affect. Report the differences, the cases checked, and any behavior the comparison did not cover.
 - Put an assertion in every rewrite script, so each substitution matches the count you expect. A silent zero-match is how a rename half-lands.
-- Counting with a regex undercounts whatever the regex was not written for. Count with a script over the raw text, and treat a surprising count as a bug in the count.
 - Confirm a surface before calling it. Read a table's columns and types, or a function's signature, before writing the query or the call.
 - Probe a destructive database change inside an explicit `BEGIN`/`ROLLBACK`. A rollback on an autocommit connection does nothing, and a sequence advances across a rollback either way.
 - Never hand-edit a patch file. A hunk body edited without recomputing its `@@` counts is malformed. Apply the patches to pristine copies, edit the results, regenerate each patch with `diff`, and confirm every patch applies with zero failures and zero offsets.

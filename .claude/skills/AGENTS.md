@@ -79,3 +79,7 @@ Verification passed for all six skill manifests using Nushell and for `git diff 
 The user kept the inlining requirement for single-use names and requested comments as the way to resolve unclear meaning. Comments may explain rationale when it meets the strict definition of semantic clarity in the code skill's Comments section.
 
 The user prefers subqueries for SQL inlining, subject to measured performance. The code skill's SQL section holds the canonical rule.
+
+The user requested "option type" to distinguish the type from the value that represents absence. The code skill holds the canonical rule.
+
+The user requested clarifying the prose rules flagged as vague using Joseph M. Williams's discussion in [Style: Toward Clarity and Grace](https://s3.amazonaws.com/arena-attachments/1408171/244bf97521118f6fcbe692b0b98dcc7d.pdf). The clarity and cohesion clarification follows chapter 3, p. 48. The guidance on introducing unfamiliar technical terms follows chapter 4, pp. 73–75. The restrictions on implementation details and Limitations caveats remain user instructions.

@@ -56,7 +56,7 @@ Flow is what makes a passage readable, and cohesion is what makes flow.
 - The first few words set the point of view. The last few carry the emphasis. Put what you want remembered at the end, where the reader cannot predict it.
 - Keep the opening clean. Delay the difficult or surprising material until after the subject and verb have landed.
 - Revise for emphasis by trimming the end, shifting peripheral material left, and shifting new material right.
-- Where clarity and cohesion pull against each other, cohesion wins.
+- Balance clarity within each sentence with cohesion across the passage. When the two conflict, favor the arrangement that helps the reader connect the sentences into a whole.
 - Cohesion is sentences fitting together. Coherence is the passage adding up to one thing. Both are required, and a passage of individually clear sentences can fail the second.
 - Hold a consistent string of topics across a passage. Where the opening words of consecutive sentences name unrelated things, the passage is incoherent however clear each sentence is.
 - Repeat a theme's words across a passage to hold it together, and let the closing sentence answer the opening one.
@@ -123,7 +123,7 @@ Section Redundancy cuts whole clauses and paragraphs. These cut words.
 - Neither name looks wrong at its own site, so a second name is never found by reading either passage. Find it by asking what one thing is called everywhere, and check the definition sites first, since that is where the second name is born and where every later use inherits it.
 - Notation obeys these rules. A symbol is a name. Bind it once, and if a section rebinds it, that is the same defect as calling one thing two things, with the added cost that the proofs keep type-checking. Prefer a mark that says what was done (a prime for a different computation, a subscript for a different input) over a fresh letter, and never introduce a letter for a set or an object referenced once.
 - Bind a symbol with "Let $X$ be ...", never "Write $X$ for ...". This holds in running prose as well as in the hypothesis of a lemma, so one binding form covers the document. Where a sentence binds two symbols, repeat the verb instead of eliding it: "Let $L$ be the context logits, and let $L^{\varnothing}$ be the document-free logits."
-- Implementation vocabulary belongs in the implementation section. "Row", "buffer", "batch", "call" and their kin name where a thing sits in some machine, not what it is, and the reader of a method section has no machine in view.
+- In a method section, describe the method's concepts and operations. Introduce unfamiliar technical terms through familiar information, placing each new term at the end of its sentence. Reserve words such as "row", "buffer", "batch", and "call" for implementation sections when they describe data storage or code execution.
 
 ## Claims
 
@@ -163,4 +163,4 @@ Sections and conclusions:
 
 ## Limitations (documents)
 
-Never propose adding a serious caveat to a Limitations section. Raise the concern in chat and let the author decide what a reviewer sees. A caveat naming an unresolved weakness with no answer attached hands reviewers a framing they may not have reached alone. The one thing that may enter the paper is a preemptive rebuttal, a concern stated together with its disposal in the same passage, and only when the author asks for it. The same restraint applies to appendices: keep protocol descriptions brief and skip nuances the reader does not need.
+Never propose adding a caveat about an unresolved weakness to a Limitations section. Raise the concern in chat and let the author decide what a reviewer sees. A caveat naming an unresolved weakness with no answer attached hands reviewers a framing they may not have reached alone. The one thing that may enter the paper is a preemptive rebuttal, a concern stated together with its disposal in the same passage, and only when the author asks for it. The same restraint applies to appendices: keep protocol descriptions brief and skip nuances the reader does not need.

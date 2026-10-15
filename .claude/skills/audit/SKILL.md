@@ -31,7 +31,7 @@ Use agents that can read the assigned files, run verification checks, and write 
 - The deliberate splits, listed outright. Where the project has ruled that one concept takes a different name in code than in prose, the cross-cutting agent reports every one of them unless told.
 - The shape of a finding: a file and line, a verbatim quote, the rule cited by skill and section, the problem in two sentences, and the concrete replacement.
 - The ban on style preference. A finding no rule states is noise, and noise is what makes a long report unreadable.
-- The counting rule. Count with a script over the raw text rather than a bare regex, which undercounts whatever it was not written for. Before calling anything dead, check every reader directory the layout names, a manuscript and ad-hoc queries included.
+- Before calling anything dead, check every reader directory the layout names, a manuscript and ad-hoc queries included.
 - A QUESTIONS section, for cases where two readings of the rules give materially different fixes, or where the fix collides with a settled name.
 - An instruction to name the checks that came back clean. A clean surface is a result, and it is the only thing separating a rule the agent checked from one it forgot.
 - The output path, one file per agent in the session scratchpad, and a per-agent finding prefix so a merged finding traces back to its auditor.
@@ -39,7 +39,7 @@ Use agents that can read the assigned files, run verification checks, and write 
 
 ## What each agent hunts
 
-On a code surface: a definition referenced once, a rule stated in two places, a value derived twice from one source, a magic sentinel inside the valid range where null belongs, a threshold comparison that disagrees with the intended boundary behavior, a comment that fails the code skill's definition of semantic clarity, a per-field comment, a name coined for a branch's role in a comparison, a conditional wrapper reusing its primitive's word, speculative configurability, error handling for a state the program cannot reach, a versioned copy sitting beside a live file.
+On a code surface: a definition referenced once, a rule stated in two places, a value derived twice from one source, a magic sentinel inside the valid range used to represent absence, a threshold comparison that disagrees with the intended boundary behavior, a comment that fails the code skill's definition of semantic clarity, a per-field comment, a name coined for a branch's role in a comparison, a conditional wrapper reusing its primitive's word, speculative configurability, error handling for a state the program cannot reach, a versioned copy sitting beside a live file.
 
 On a prose surface: nominalizations, noun stacks of three or more, buried subjects, a passage whose consecutive openings name unrelated things, em dashes, semicolons, transition words, negations that should be positive facts, contrastive phrasing against a superseded version, restated clauses and repeated paragraphs, degree adverbs and hedges, a type label coined for a control-flow branch, an ablation called an "arm", a symbol rebound between sections, a symbol introduced for one reference, a claim in a summary position standing on neither a measured result nor a placeholder awaiting one, a bullet hard-wrapped at a column. Proposing a Limitations caveat is forbidden, so a concern about one goes to QUESTIONS for the author.
 
