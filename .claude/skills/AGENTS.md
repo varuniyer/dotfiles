@@ -73,3 +73,9 @@ All nine findings were applied. No findings were declined or deferred.
 The additional user requests were applied. Workflow skills describe required agent capabilities and questions without naming a particular assistant's agent types or question tool. The README creates the skill links with one Nushell command that expands the source directories automatically.
 
 Verification passed for all six skill manifests using Nushell and for `git diff --check`. The README snippet created six links in a temporary destination, and every linked SKILL.md matched its source. The repository defines no further test suite or document-check target for these files.
+
+## Decisions on 2026-10-15
+
+The user kept the inlining requirement for single-use names and requested comments as the way to resolve unclear meaning. Comments may explain rationale when it meets the strict definition of semantic clarity in the code skill's Comments section.
+
+The user prefers subqueries for SQL inlining, subject to measured performance. The code skill's SQL section holds the canonical rule.

@@ -34,14 +34,14 @@ These apply to every language and every surface: application code, SQL, schema d
 ## Defaults and edges
 
 - Represent an absent optional value with the language's null and check for null before using it. Never use a value from the valid range to mean disabled. Booleans are never optional. A Boolean may control whether an optional value is set.
-- Thresholds compare inclusively, so the extreme value is a true no-op.
+- Choose comparisons to match the intended boundary behavior. Check equality and endpoint cases explicitly.
 - Constraints guard the human writing a row by hand, not the code path. Keep a check that today's only writer cannot violate.
 - Fix a bug where it originates. A defensive default downstream hides it and keeps it.
 
 ## Comments
 
-- A comment carries a semantic constraint or a gotcha the code cannot express. Nothing else.
-- Never restate what the line below shows, never narrate rationale, rejected alternatives, load order, file placement, or another library's internals, and never record the change that produced the code.
+- Use comments for semantic clarity. A comment qualifies only when it supplies a fact the code and names leave implicit about what a value represents, what behavior is required, or what condition correctness depends on. The fact must resolve a concrete ambiguity that affects behavior, validity, or correct use.
+- Rationale qualifies when it explains how an implementation choice preserves that meaning, behavior, or condition. Omit comments that only restate operations, narrate implementation steps, or record change history.
 - Explain a field's purpose through its name. Put any necessary comment about the field in the documentation for its containing class, record, or table.
 - Cap a doc comment at 3 lines. A schema object takes one comment of at most 2 lines above the statement creating it, stating what the object holds beyond what its name says. An enum whose members are its definition and a trigger named for what it fires on both earn none.
 
@@ -57,6 +57,7 @@ These apply to every language and every surface: application code, SQL, schema d
 
 - The database owns concurrency protection, locking, and atomic multi-step writes, in its own functions and triggers. Correctness must hold for a write typed by hand, with no application code in the way.
 - Writers fail loudly on collision. Never write `ON CONFLICT`.
+- Prefer a subquery at the use site for a query referenced once. Keep a single-use CTE only when its SQL semantics are required or representative execution plans and measured runtimes show a benefit.
 - Never use a CTE where a separate view does the same work as fast or faster.
 - Use LATERAL when the inner query returns multiple rows or columns per outer row. Check correlated scalar subqueries in the SELECT list with execution plans and measured runtimes on representative data at expected outer-row counts. Use LATERAL or a CTE when it simplifies redundant work.
 - Write `ARRAY(SELECT ... ORDER BY ...)` instead of `array_agg(... ORDER BY ...)`, except when a grouped or LATERAL query computes multiple aggregates over the same rows in one scan. A FROM-less subquery is pulled up and its expression substituted at every reference, so the array builds once per reference and the scan repeats.

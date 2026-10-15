@@ -83,7 +83,7 @@ Flow is what makes a passage readable, and cohesion is what makes flow.
 - Cut clauses that restate or elaborate the sentence's own point rather than adding information. State the point once.
 - Collapse a claim-then-elaboration pair into one sentence only when the merge stays grammatical. Reread the merged sentence for subject-verb agreement and dangling negation before keeping it.
 - Delete a paragraph outright, rather than trimming it, when it repeats a claim made elsewhere in the document. Abstracts and conclusions may summarize claims developed elsewhere.
-- Cut a comment that restates what the line below it already shows. Comments carry only semantic constraints and gotchas the code cannot express. Never narrate design rationale, rejected alternatives, load order, file placement, or another library's or file's internal mechanics.
+- For code comments and docstrings, apply the `code` skill's Comments section.
 - Cut degree adverbs and intensifying adjectives ("purely", "substantially", "genuinely", "directly") when the sentence means the same thing without them. Keep one only when removing it erases a real contrast, or when the words sit inside quoted experimental text (prompts, code listings), where changing them changes the experiment.
 
 ## Concision
