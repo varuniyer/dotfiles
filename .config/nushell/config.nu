@@ -47,8 +47,8 @@ $env.config.history = {
 }
 
 # --- Completions (external commands delegate to fish) ---
-let fish_completer = {|spans|
-    let results = fish --command $"complete '--do-complete=($spans | str replace --all "'" "\\'" | str join ' ')'"
+let fish_completer = {|place|
+    let results = fish --command $"complete '--do-complete=($place.command | str replace --all "'" "\\'" | str join ' ')'"
     | from tsv --flexible --noheaders --no-infer
     | rename value description
     | update value {|row|
