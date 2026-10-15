@@ -19,7 +19,7 @@ Cover every tracked surface. Application code, schema, build files, manifests, c
 
 Add one cross-cutting agent for the naming rule. One thing under two names hides between files, and neither name looks wrong at its own site, so a single-surface agent cannot see it. That agent inventories what each concept is called on every surface and reports the collisions with counts.
 
-Use agents that can read the assigned files, run verification checks, and write their reports. State in every prompt that the reviewed files are read-only and that the agent may write only its assigned report and verification scripts in the session scratchpad.
+Use agents that can read the assigned files, run verification checks, and write their reports. State in every prompt that the reviewed files are read-only. Agents may write only their assigned reports, verification scripts, and disposable check outputs in the session scratchpad. Redirect caches there or disable them.
 
 ## What each agent prompt carries
 
@@ -38,9 +38,9 @@ Use agents that can read the assigned files, run verification checks, and write 
 
 ## What each agent hunts
 
-On a code surface: a definition referenced once, a rule stated in two places, a value derived twice from one source, a magic sentinel inside the valid range used to represent absence, a threshold comparison that disagrees with the intended boundary behavior, a comment that fails the prose skill's definition of semantic clarity, a per-field comment, a name coined for a branch's role in a comparison, a conditional wrapper reusing its primitive's word, speculative configurability, error handling for a state the program cannot reach, a versioned copy sitting beside a live file.
+On a code surface: a replaceable definition or computed intermediate referenced once, a rule stated in two places, a value derived twice from one source, a magic sentinel inside the valid range used to represent absence, a threshold comparison that disagrees with the intended boundary behavior, a comment that fails the prose skill's definition of semantic clarity, a per-field comment, a name coined for a branch's role in a comparison, a conditional wrapper reusing its primitive's word, speculative configurability, error handling for a state the program cannot reach, a versioned copy sitting beside a live file.
 
-On a prose surface: nominalizations, noun stacks of three or more, buried subjects, a passage whose consecutive openings name unrelated things, em dashes, semicolons, transition words, negations that should be positive facts, a historical comparison that violates the prose skill's Positive framing section, restated clauses and repeated paragraphs, degree adverbs and hedges, a type label coined for a control-flow branch, an ablation called an "arm", a symbol rebound between sections, a symbol introduced for one reference, a claim in a summary position that violates the prose skill's Claims section after accounting for any applicable placeholder convention, a bullet hard-wrapped at a column. Proposing a Limitations caveat is forbidden, so a concern about one goes to QUESTIONS for the author.
+On a prose surface: nominalizations, noun stacks of three or more, buried subjects, a passage whose consecutive openings name unrelated things, em dashes, semicolons, rhetorical signposts, negations that should be positive facts, a historical comparison that violates the prose skill's Positive framing section, restated clauses and repeated paragraphs, degree adverbs and hedges, a type invented solely to name a branch condition, an ablation called an "arm", a symbol rebound between sections, a symbol introduced for one reference, a claim in a summary position that violates the prose skill's Claims section after accounting for any applicable placeholder convention, a bullet hard-wrapped at a column. Proposing a Limitations caveat is forbidden, so a concern about one goes to QUESTIONS for the author.
 
 ## Synthesis
 

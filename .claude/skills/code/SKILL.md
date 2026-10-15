@@ -15,18 +15,18 @@ These apply to every language and every surface: application code, SQL, schema d
 
 ## Naming
 
-- One thing carries one name across every surface it crosses, and one name carries one thing. A second name is a defect even when both are apt, because the two drift and nothing raises.
-- Name a thing by what it does, never by its role in a comparison, its position in a pipeline, or its type. Coining a type label for a branch or a conjunction of conditions spreads that same defect across a file.
+- One thing carries one name across every surface it crosses, and one name carries one thing. A second name is a defect even when both are apt, because the two drift and nothing raises. Apply the [prose naming caveats](../prose/SKILL.md#naming) for symbol spellings, descriptive phrases, and independent local bindings.
+- Name an operation by what it does and a value by what it represents. Choose data names such as `source_text` and `tokens` instead of literal `input` and `output`. Name a method by how it works, never by its role in a comparison.
 - A conditional operation and the primitive it wraps take distinct names. Suffix the caller with what gates it rather than reusing the primitive's own word.
-- Mark the exception, not the default. The common case is bare and the variant carries the mark, and the mark says what differs.
-- Implementation vocabulary stays in the implementation. Words naming where a value sits in some machine do not belong in the description of what it is.
-- A column or field of an enum type takes the enum's stem as its name, so `thing_t` sits in `thing`. No name carries a `_kind`, `_type`, or `_family` suffix, which is a second name for what the type already says.
+- Related operations may both have qualified names that express how they differ, such as `search_exact` and `search_approximate`.
+- Follow the [prose vocabulary rule](../prose/SKILL.md#naming) for descriptions of concepts, storage, and execution.
+- A column or field of an enum type uses the enum's stem, so `thing_t` sits in `thing`. Add purpose qualifiers to distinguish roles, such as `requested_status` and `observed_status` for two fields of `status_t`. No name carries a `_kind`, `_type`, or `_family` suffix, which is a second name for what the type already says.
 - In prose, use "type" for a classification.
 
 ## Duplication and abstraction
 
 - State each rule once. Two places that must agree will stop agreeing, and the failure is silent because both still run.
-- Count references, not call sites. A definition earns its place when its one caller names it twice. A name referenced once does not, and the expression goes inline.
+- Count references, not call sites. A definition earns its place when its one caller names it twice. Inline a replaceable definition or computed intermediate referenced once. Parameters and names required by an interface are outside this rule. Count external or framework references only when you can identify their readers.
 - Prefer composition to a named intermediate. If a value exists only to be fed to the next step, compose the steps and let the intermediate stay anonymous.
 - Deriving a value in two places is duplication even when the derivations look different. Check what a thing is computed from, not how.
 
@@ -65,7 +65,7 @@ For code comments and docstrings, follow the [Code comments and docstrings secti
 
 - Never write versioned copies of a file under suffixes like `_v2`, `_old`, or `.bak`. A file is either committed to version control, which is its history, or edited in place with none kept. Suffix copies plant stale artifacts beside live ones under near-identical names.
 - Every changed line traces to the request. Do not improve adjacent code, comments, or formatting.
-- Match the surrounding style even where it differs from your preference.
+- Match the surrounding style for choices left open by mandatory rules and applicable project instructions.
 - Remove what your change orphaned. Leave pre-existing dead code alone and mention it.
 - Say what you deliberately left out and why. Scaling the work down is the author's call.
 
@@ -78,10 +78,10 @@ For code comments and docstrings, follow the [Code comments and docstrings secti
 - Confirm a surface before calling it. Read a table's columns and types, or a function's signature, before writing the query or the call.
 - Probe a destructive database change inside an explicit `BEGIN`/`ROLLBACK`. A rollback on an autocommit connection does nothing, and a sequence advances across a rollback either way.
 - Never hand-edit a patch file. A hunk body edited without recomputing its `@@` counts is malformed. Apply the patches to pristine copies, edit the results, regenerate each patch with `diff`, and confirm every patch applies with zero failures and zero offsets.
-- A rewritten file and a loaded edit are two facts. An A/B comparison reads which variant each pass loaded off the running code object, never off the file, and asserts the two passes differ before it compares their outputs.
-- Never add timing instrumentation to a run whose speed is being measured, since the instrument perturbs the measurement. Compare what unmodified runs already record.
+- In an A/B comparison, verify which code, configuration, or schema revision each run consumed. Use evidence from the running program or database. Confirm that the runs consumed the intended distinct revisions before comparing results.
+- Use the timing output already recorded by unmodified benchmark runs.
 - A name absent from a file is not therefore free. A convention can reserve it without ever using it.
-- Independent review finds what self-review does not, especially in a pass whose whole point was removing things. Get one before calling a large cleanup done.
+- Independent review finds what self-review does not, especially in a pass whose whole point was removing things. Get one before calling a repo-wide cleanup done.
 
 ## Reporting
 

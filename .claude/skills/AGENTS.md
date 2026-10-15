@@ -95,3 +95,37 @@ The user allowed source URLs in comments when applicable. The prose skill's Code
 The user clarified that the extra caution about removing or weakening checks applies to non-orphaned checks. Checks orphaned by the requested change follow the code skill's removal rule. An authorized removal may proceed within that scope. This resolves FLOW-02 from the 2026-10-15 review.
 
 The user confines comparisons with previous versions to commit messages. Comments and other prose surfaces describe current behavior. Refactor verification still compares implementations. Its reports state the checks run, current results, and coverage gaps. The code skill's Verification section holds the procedure, and the prose skill's Positive framing section holds the writing rule. This resolves CORE-R02 from the 2026-10-15 review.
+
+The user approved the naming clarifications for CROSS2-03, CROSS2-04, and CROSS2-05. Prose's Naming section holds the caveats for descriptive explanations, Greek-symbol spellings in code, and independent local bindings. Code references those caveats and permits purpose qualifiers for enum fields with different roles.
+
+The user requires "type" when discussing a classification. The branch-naming wording in code, prose, and audit follows that terminology. The user found the timing instructions vague and contrived. Code's Verification section states the requirement to use timing output already recorded by unmodified benchmark runs.
+
+The user defined a large cleanup as repo-wide and confirmed that comment delimiters count toward the line cap. Code's independent-review trigger and prose's comment rule hold those instructions. These resolve REVIEW-Q01 and REVIEW-Q02.
+
+Shared skill instructions use generic paths and never name a particular project. The user accepts generic paths derived from the target repository, so FLOW2-08 is declined. The user requested removing the sample-count instruction if redundant. A search of all six skills found it only in prose's Claims section, so it is retained and REVIEW-Q03 is declined.
+
+The user clarified that two types may both have qualified names and that input and output values are named for what they represent. Code's Naming section holds both instructions. The user's prediction/label example is context-specific. Prose's branch-description rule states its aim concretely, giving a condition directly and permitting consistent repetition of an operation's functional name. Audit follows that wording. These resolve CROSS2-06, CROSS2-01, and CROSS2-02.
+
+## Dispositions for the remaining fifteen clarifications
+
+The user authorized these edits with “ok snd for the 15 use prose rules to fix them”. The canonical wording remains in the skills.
+
+| Finding | Disposition | Deciding fact |
+|---|---|---|
+| CROSS2-07 | APPLIED | A passage's subject governs implementation vocabulary in documents and chat. Code refers to prose's canonical rule. |
+| CORE2-01 | APPLIED | Single-use inlining covers replaceable definitions and computed intermediates. Parameters and required interface names retain their bindings. Identified external readers count. |
+| CORE2-05 | APPLIED | Comparisons verify which code, configuration, or schema revision each run consumed before comparing results. |
+| FLOW2-03 | APPLIED | Failure attribution requires baseline results or reproduction against unchanged state. Existing failures are reported separately. |
+| FLOW2-04 | APPLIED | The graph includes prerequisites for editing, execution, and verification. |
+| FLOW2-05 | APPLIED | Deferred prerequisites retain their edges. Dependent work is deferred or re-planned, and readiness is reassessed after rollback. |
+| FLOW2-01 | APPLIED | Paper review separates truth from the edit decision and includes true assertions needing no change. |
+| FLOW2-02 | APPLIED | Code review includes UNVERIFIABLE. PARTIAL separates supported, refuted, and unresolved parts. |
+| CORE2-06 | APPLIED | Assertions use declarative form. Questions obtain information or decisions. |
+| CORE2-07 | APPLIED | The signpost restriction preserves words needed for conditions, sequence, and logical relationships. |
+| CORE2-02 | APPLIED | Surrounding style governs choices left open by mandatory rules and project instructions. |
+| FLOW2-06 | APPLIED | Existing authorization carries forward. Questions concern unresolved intent or scope. Unrelated bug fixes remain separate proposals. |
+| FLOW2-07 | APPLIED | Reviewed sources stay read-only. Reports, scripts, disposable check outputs, and redirected caches belong in scratch. |
+| FLOW2-09 | APPLIED | Deferred findings retain their identifiers, subjects, reasons, and required checks in a durable project record. The report names the destination. |
+| FLOW2-10 | APPLIED | A claim that stands alone may form its own group. Claims sharing a file retain one owner. |
+
+All fifteen were applied. None was declined or deferred in this pass. Independent source reviews checked the revised rules against concrete cases. Verification uses Nushell to validate all six manifests and their Codex links, plus `git diff --check -- .claude/skills`.

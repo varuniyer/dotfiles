@@ -16,7 +16,7 @@ Use agents that can read the assigned files and run `psql` and `.venv/bin/python
 ## What each agent prompt carries
 
 - The repo path, an instruction to read `AGENTS.md` first for the layout, and the source locations. The paper source and its PDF take the repository directory's own name, `latex/<repo>.tex` with the appendix merged in and `<repo>.pdf` beside it. The package and the schema are where `AGENTS.md` says. Reach the database through plain `psql -c "..."` with no `-h` or `-d`.
-- Do not edit any files. Never edit `latex/custom.bib`.
+- Keep the reviewed files read-only. Never edit `latex/custom.bib`. Write reports, verification scripts, and disposable check outputs only in the session scratchpad. Redirect caches there or disable them.
 - Every sub-assertion spelled out as its own question, phrased as what to check rather than what the reviewer said. A reviewer's compression of the paper is not the paper.
 - The verdict scale: CONFIRMED / PARTLY TRUE / FALSE / UNVERIFIABLE, per sub-assertion, with line numbers and verbatim quotes for paper claims and `file:line` for code claims.
 - For a CONFIRMED or FALSE sub-assertion, give one truthful rebuttal sentence, or state that no truthful rebuttal exists. For an UNVERIFIABLE assertion, state what remains unknown and name the check that would settle it. Apply these instructions to the supported, refuted, and unresolved parts of PARTLY TRUE assertions. A rebuttal sentence is material for answering the reviewer, never text destined for the paper.
@@ -28,16 +28,17 @@ Use agents that can read the assigned files and run `psql` and `.venv/bin/python
 
 ## Synthesis
 
-Sort findings by what they demand, not by the reviewer's order. Place the supported, refuted, and unresolved parts of PARTLY TRUE assertions in the corresponding groups:
+Judge each assertion's truth before deciding whether it needs an edit. Sort findings by what they demand, not by the reviewer's order. Place the supported, refuted, and unresolved parts of PARTLY TRUE assertions in the corresponding groups:
 
 1. Assertions that are FALSE, with the quote that refutes them. These cost nothing to answer.
-2. Assertions that are true and fixable in text. These are the edit list.
-3. Assertions that are true and need a run, a measurement, or unwritten code. These are the real gaps, and the ones where the reviewer has force.
-4. Assertions that are UNVERIFIABLE. State what remains unknown and name the check that would settle each.
+2. Assertions that are true and need no edit or further work, with the reason.
+3. Assertions that are true and fixable in text. These are the edit list.
+4. Assertions that are true and need a run, a measurement, or unwritten code. These are the real gaps, and the ones where the reviewer has force.
+5. Assertions that are UNVERIFIABLE. State what remains unknown and name the check that would settle each.
 
 Before an assertion reaches the edit list, find where the paper already covers its subject. Three dispositions follow, and none of them adds a second detailed statement of a claim.
 
-- The paper states it clearly and correctly. Close it under 1 with the quote. There is no edit.
+- The paper states it clearly and correctly. Quote it and place the assertion in group 1 if the quote refutes it, or group 2 if the assertion is true and needs no edit.
 - The paper states it in a shape the reviewer did not expect, asserted where it should be argued, imprecise, overstated against what the work measures, or sitting where the argument does not reach it. Revise the site that already carries it. This is the common case and it is still one detailed statement afterwards.
 - The paper states it nowhere. Now it is an edit candidate, gated by the test below.
 

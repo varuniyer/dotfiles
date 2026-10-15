@@ -64,7 +64,8 @@ Flow is what makes a passage readable, and cohesion is what makes flow.
 ## Punctuation and sentence shape
 
 - No em dashes and no semicolons. Split into sentences, or use a comma or conjunction.
-- Short declarative sentences, one idea each. No transition words ("However", "In contrast", "Moreover", "As such", "Crucially"). Dropping transitions removes most colons and dashes on its own, since those exist to join clauses.
+- Write short sentences, with one idea each. Use declarative sentences for assertions. Ask questions to obtain information or decisions.
+- Cut rhetorical signposts ("However", "In contrast", "Moreover", "As such", "Crucially"). Keep conjunctions and words needed to state a condition, sequence, or logical relationship.
 - Split long sentences first, then prune. Splitting promotes transition clauses into standalone sentences that assert nothing. Delete those.
 - Write logical conditions as symbols (`\land`, `\neg` in LaTeX, `and`/`not` in code prose), never as capitalized words (AND, NOT). Bind a symbol to the column or predicate first when the operands are long names.
 - Keep proof bodies intact. There the chain of inference is the content, so the split-and-prune pass does not apply.
@@ -90,7 +91,7 @@ Flow is what makes a passage readable, and cohesion is what makes flow.
 - Rationale qualifies when it explains how an implementation choice preserves that meaning, behavior, or condition. Omit comments that only restate operations, narrate implementation steps, or record change history.
 - A comment may include a source URL supporting its semantic explanation or rationale.
 - Explain a field's purpose through its name. Put any necessary comment about the field in the documentation for its containing class, record, or table.
-- Cap a doc comment at 3 lines. A schema object takes one comment of at most 2 lines above the statement creating it, stating what the object holds beyond what its name says. An enum whose members are its definition and a trigger named for what it fires on both earn none.
+- Cap a doc comment at 3 lines. Count physical source lines, including lines containing only comment delimiters. A schema object takes one comment of at most 2 lines above the statement creating it, stating what the object holds beyond what its name says. An enum whose members are its definition and a trigger named for what it fires on both earn none.
 
 ## Concision
 
@@ -111,7 +112,7 @@ Section Redundancy cuts whole clauses and paragraphs. These cut words.
 - Balance is the most visible feature of good sentences. Build it with and, or, nor, but, and yet.
 - End on strength: a strong word or pair, a prepositional phrase with "of", or an echo of a word used earlier.
 - Chiasmus, repeating two elements in reversed order, is available and easy to overuse. So is the suspended opening that delays the point. Use either once in a passage at most.
-- Watch sentences under fifteen words and over thirty. Both are worth a second look, and neither is wrong by itself. Where this meets the short-declarative rule under Punctuation, that rule wins, and the count is only a prompt to reread.
+- Watch sentences under fifteen words and over thirty. Both are worth a second look, and neither is wrong by itself. Where this meets the short-sentence rule under Punctuation, that rule wins, and the count is only a prompt to reread.
 
 ## Which rules to obey
 
@@ -122,14 +123,14 @@ Section Redundancy cuts whole clauses and paragraphs. These cut words.
 
 ## Naming
 
-- Do not coin or repeat a type label (a "tier", a "hierarchy", a named "structure") for something that is a control-flow branch or a conjunction of conditions. Name the branch once, in the algorithm or the single canonical place that defines it, then refer to it everywhere else by what it does. A recurring proper-noun-like label for an if/else is the same defect as a restated clause, spread across the document.
+- Define each branch's condition and operation in one canonical place. Use the operation's functional name consistently. Describe a condition such as "score below the threshold" directly, instead of inventing a type solely to name that condition.
 - Name a branch or variant by what it does, never by its role in a comparison. "Fallback" is wrong for a branch that runs a full rule.
 - Never call an ablation or method variant an "arm".
-- One concept carries one name for the whole document, and one name carries one concept. A second name is a defect even when both are apt, because the reader has to discover they are the same thing and the two drift once they are apart. The inverse is as bad, one name covering several things, and it hides better, since each site reads fine on its own. A project's `AGENTS.md` records the instances that project has actually paid for.
+- One concept carries one name for the whole document, and one name carries one concept. Treat a descriptive phrase defining a symbol or identifier as an explanation of that name. Count a Greek-letter symbol and its English spelling in code, such as `α` and `alpha`, as the same name. Independent local bindings in separate functions or proofs may reuse a name. A second name for a shared concept is a defect even when both are apt, because the reader has to discover they are the same thing and the two drift once they are apart. The inverse is as bad, one name covering several things, and it hides better, since each site reads fine on its own. A project's `AGENTS.md` records the instances that project has actually paid for.
 - Neither name looks wrong at its own site, so a second name is never found by reading either passage. Find it by asking what one thing is called everywhere, and check the definition sites first, since that is where the second name is born and where every later use inherits it.
-- Notation obeys these rules. A symbol is a name. Bind it once, and if a section rebinds it, that is the same defect as calling one thing two things, with the added cost that the proofs keep type-checking. Prefer a mark that says what was done (a prime for a different computation, a subscript for a different input) over a fresh letter, and never introduce a letter for a set or an object referenced once.
+- Notation obeys these rules. A symbol is a name. Bind a shared symbol once and keep its meaning across the sections that use it. Rebinding it to a different meaning gives one name to two concepts, with the added cost that the proofs keep type-checking. Prefer a mark that says what was done (a prime for a different computation, a subscript for a different input) over a fresh letter, and never introduce a letter for a set or an object referenced once.
 - Bind a symbol with "Let $X$ be ...", never "Write $X$ for ...". This holds in running prose as well as in the hypothesis of a lemma, so one binding form covers the document. Where a sentence binds two symbols, repeat the verb instead of eliding it: "Let $L$ be the context logits, and let $L^{\varnothing}$ be the document-free logits."
-- In a method section, describe the method's concepts and operations. Introduce unfamiliar technical terms through familiar information, placing each new term at the end of its sentence. Reserve words such as "row", "buffer", "batch", and "call" for implementation sections when they describe data storage or code execution.
+- Describe a method through its concepts and operations. Introduce unfamiliar technical terms through familiar information, placing each new term at the end of its sentence. Use terms for data storage or code execution, such as "row", "buffer", "batch", and "call", in passages discussing those subjects. The passage's subject sets this boundary in documents and chat.
 
 ## Claims
 

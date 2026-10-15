@@ -13,24 +13,24 @@ Read the whole file first and collect every finding whose fix the rules leave op
 
 Where the audit shipped a questionnaire, its answers are the input. Carry each answer verbatim into the prompt of the agent whose findings it governs, rather than paraphrasing it.
 
-A finding whose fix would change behavior is a question and never a default. A style pass that quietly corrects a latent bug is two changes wearing one commit, and the measurement that would have caught a mistake in the second one never ran.
+Apply behavior changes the author has already authorized. Ask about unresolved intent or scope. Propose unrelated bug fixes separately.
 
 ## Order the findings, then parallelize each level
 
 The audit already partitioned the files, one label per disjoint set. Before building the dependency graph, merge labels governed by the same answer under one owner. Also merge labels splitting one file by line range. Check the merged findings for conflicting edits and ask about any conflict the settled answers leave unresolved. Each resulting label is one node. A cross-surface label edits files every other label owns, so it takes a level to itself.
 
-Edges run from the fix that must land first to the fix that must land after, and they come from two places.
+Edges run from each prerequisite fix to the findings that need it for editing, execution, or verification. The following cases require edges.
 
 - A cross-file rename precedes every local edit in the files it renames. An edit written against the old name lands on text the rename already moved.
 - A finding whose quote sits inside a passage another finding rewrites comes after that one.
 
 A cycle means two findings each presume the other. Merge them into one node under one owner rather than choosing an order.
 
-Then walk the graph in topological levels. A level is an antichain of labels, and since the labels partition the files, every label in it writes files no other label in it touches. The whole level fans out at once, one agent per label, and the pass costs as many rounds as the graph is deep rather than as many as it has labels.
+Then walk the graph in topological levels. A level is an antichain of labels, and since the labels partition the files, every label in it writes files no other label in it touches. Fan out the ready work in each level, one agent per label. Each finding starts when its prerequisites are satisfied.
 
-Levels make attribution cheap. Run the checks recorded for each level after it lands, and a break belongs to that level.
+Run the checks recorded for each level after it lands.
 
-Run available checks within the authorized task. Findings whose required run, measurement, or data remains unavailable sit outside the graph. They go on a deferred list, each with the check that would settle it, and none is ever guessed closed.
+Run available checks within the authorized task. Mark findings with unavailable required runs, measurements, or data as deferred and retain their dependency edges. Record the check that would settle each one. Defer or re-plan dependent work that needs the missing result. Continue independent work.
 
 ## One writer per file, always
 
@@ -59,7 +59,7 @@ A later level reads files an earlier level changed, so line numbers have moved. 
 
 ## Verification
 
-Before editing, read the repository's instructions for formatting, linting, tests, and other checks. Record the exact commands required after each level and after the full pass. Run the recorded commands at their stated stages, and name any required command that could not run.
+Before editing, read the repository's instructions for formatting, linting, tests, and other checks. Record the exact commands required after each level and after the full pass. Establish baseline results for the relevant checks before editing, or reproduce a disputed failure against unchanged state before attributing it to an edit. Run the recorded commands at their stated stages, and name any required command that could not run.
 
 A formatter, a linter, and a type checker between them read past the inside of every string, so they prove nothing about a query, a template, or a manifest key. A change reaching one of those is verified by running the thing that reads it.
 
@@ -67,7 +67,7 @@ Verify and report refactors under the code skill's Verification section.
 
 Where a document carries its own check target, run it and report what it flags.
 
-A failing gate blocks the next level rather than the whole pass. Fix it, or say plainly which finding caused it and back that one out before going on.
+A failing gate pauses work that depends on it. Fix failures caused by the edits, or identify and back out the finding responsible. Report existing failures separately and keep their repair within the authorized scope. After a rollback, reassess dependent readiness and continue independent work.
 
 ## A second questionnaire
 
@@ -79,6 +79,6 @@ One line per finding: identifier, disposition, and the fact that decided it. Gro
 
 Record the resolved ambiguities where the project keeps its rulings, before deleting anything. Each answer cost the author a decision, and an unrecorded decision returns as the same question.
 
-Delete `data/findings.md` once every finding carries a disposition and the gates pass. Until that moment it is the only copy of the list. A deferred finding survives the deletion only when the check that would settle it is written down elsewhere first, so write it down first.
+Delete `data/findings.md` once every finding carries a disposition and the gates pass. Before deletion, preserve each deferred finding's identifier, unresolved subject, reason for deferral, and required check in a durable project record. Name that destination in the report.
 
 Then stop. Committing, pushing, and launching are a separate request.

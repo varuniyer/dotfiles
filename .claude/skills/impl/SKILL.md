@@ -11,15 +11,15 @@ The input is a numbered list of claims about the code, usually produced by anoth
 
 Group claims by the file or subsystem they touch, one agent per group. A group is coherent when its agent can answer every claim in it from one set of files. Claims that share a file go to the same agent, so no two agents read the same module and reach different conclusions.
 
-Six to eight groups is the usual shape for a twenty-claim list. Never one agent per claim.
+Six to eight groups is the usual shape for a twenty-claim list. A claim that stands alone may form its own group.
 
-Use agents that can read the assigned files, run verification checks, and write their reports. State in every prompt that the reviewed files are read-only and that the agent may write only its assigned report and verification scripts in the session scratchpad.
+Use agents that can read the assigned files, run verification checks, and write their reports. State in every prompt that the reviewed files are read-only. Agents may write only their assigned reports, verification scripts, and disposable check outputs in the session scratchpad. Redirect caches there or disable them.
 
 ## What each agent prompt carries
 
 - The repo path, and an instruction to read `AGENTS.md` first for project conventions.
 - The claims verbatim, with their original numbers, so the synthesis can zip verdicts back to the list.
-- The verdict scale: CONFIRMED / REFUTED / PARTIAL, one per claim, with `file:line` evidence.
+- The verdict scale: CONFIRMED / REFUTED / PARTIAL / UNVERIFIABLE, one per claim, with `file:line` evidence. For PARTIAL claims, separate supported, refuted, and unresolved parts. Use UNVERIFIABLE when no part can be confirmed or refuted with the available evidence.
 - The reader surface a "dead" or "only caller" claim has to clear, which is every directory `AGENTS.md` lists under repository layout. Patch files count, since they insert code that imports the package, and so do manifests, type stubs, and paper sources. Ad-hoc psql by the user is a real reader for user-facing views.
 - The skeptical rule, stated outright. A claim of "only reader" is REFUTED by any additional reader anywhere.
 - For the one or two claims that assert a bug, say which they are and demand a concrete failure scenario with inputs, or an explicit statement that the bug is unreachable and why.
