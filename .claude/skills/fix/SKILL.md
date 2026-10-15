@@ -48,9 +48,9 @@ A later level reads files an earlier level changed, so line numbers have moved. 
 - The settled answer to every ambiguity touching those findings.
 - The confirmation process under [One writer per file, always](#one-writer-per-file-always), with the earlier levels' diffs.
 - The scope rule, stated outright. Every changed line traces to a finding. No adjacent comment, no drive-by rename, no reformatting the finding did not ask for. This is the failure mode that makes an apply pass unreviewable and buries the real edits.
-- The audit's clean-check record, so nothing already cleared gets re-litigated.
+- The audit's clean-check record and the evidence behind it, to guide verification.
 - The placeholder convention, where the document has one. Decline findings based solely on a placeholder's missing measurements. Verify contradictions between passages and resolve them under the author's intended claim while preserving the placeholder convention. Ask the author when the intended claim is unclear.
-- The ban on widening a fix. Deleting a constraint, dropping a check, or scaling a rule back is a proposal to bring back, never an application.
+- The ban on widening a fix. Remove checks orphaned by the requested change. Propose removing or weakening a non-orphaned check or constraint unless the author has already authorized it.
 - The assertion rule for any scripted substitution. Every rewrite script asserts its match count against the number expected. A silent zero-match is how a rename half-lands.
 - The instruction to stop a finding and report it rather than choose, whenever the fix turns out ambiguous once the code is in view. A new question is cheaper than a wrong edit.
 - The disposition scale: APPLIED, DECLINED, or DEFERRED, one per finding, carrying the diff for the first and the reason for the other two.
@@ -63,7 +63,7 @@ Before editing, read the repository's instructions for formatting, linting, test
 
 A formatter, a linter, and a type checker between them read past the inside of every string, so they prove nothing about a query, a template, or a manifest key. A change reaching one of those is verified by running the thing that reads it.
 
-Verify refactors with the before-and-after comparisons required by the code skill. Include the differences and the cases checked in the report.
+Verify and report refactors under the code skill's Verification section.
 
 Where a document carries its own check target, run it and report what it flags.
 

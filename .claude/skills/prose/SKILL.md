@@ -75,16 +75,22 @@ Flow is what makes a passage readable, and cohesion is what makes flow.
 - State what the thing does, not what it avoids. Scan for `not`, `no`, `did not`, `rather than`, `unlikely to`, `never` and convert each into the positive fact, preserving the empirical finding.
 - Keep precise prohibitions when positive wording would obscure the rule.
 - Standard property terms ("non-deterministic", "unsupervised") are fine.
-- Describe the current behavior directly. Use a comparison only when both alternatives remain under consideration. Omit superseded versions of the code, document, or data.
-- A comment or commit message describes what the code does today. No fixup, justification, migration, or legacy commentary.
+- Describe the current behavior directly. Comparisons with previous versions and descriptions of superseded versions belong only in commit messages. Compare other alternatives only while both remain under consideration.
 
 ## Redundancy
 
 - Cut clauses that restate or elaborate the sentence's own point rather than adding information. State the point once.
 - Collapse a claim-then-elaboration pair into one sentence only when the merge stays grammatical. Reread the merged sentence for subject-verb agreement and dangling negation before keeping it.
 - Delete a paragraph outright, rather than trimming it, when it repeats a claim made elsewhere in the document. Abstracts and conclusions may summarize claims developed elsewhere.
-- For code comments and docstrings, apply the `code` skill's Comments section.
 - Cut degree adverbs and intensifying adjectives ("purely", "substantially", "genuinely", "directly") when the sentence means the same thing without them. Keep one only when removing it erases a real contrast, or when the words sit inside quoted experimental text (prompts, code listings), where changing them changes the experiment.
+
+## Code comments and docstrings
+
+- Use comments for semantic clarity. A comment qualifies only when it supplies a fact the code and names leave implicit about what a value represents, what behavior is required, or what condition correctness depends on. The fact must resolve a concrete ambiguity that affects behavior, validity, or correct use.
+- Rationale qualifies when it explains how an implementation choice preserves that meaning, behavior, or condition. Omit comments that only restate operations, narrate implementation steps, or record change history.
+- A comment may include a source URL supporting its semantic explanation or rationale.
+- Explain a field's purpose through its name. Put any necessary comment about the field in the documentation for its containing class, record, or table.
+- Cap a doc comment at 3 lines. A schema object takes one comment of at most 2 lines above the statement creating it, stating what the object holds beyond what its name says. An enum whose members are its definition and a trigger named for what it fires on both earn none.
 
 ## Concision
 
@@ -127,9 +133,10 @@ Section Redundancy cuts whole clauses and paragraphs. These cut words.
 
 ## Claims
 
-- Every claim in a summary position (abstract, Contributions list, Conclusion, subject of a commit message, PR description) must correspond to a measured result or a specific tested scope.
+- Match every claim in a summary position (abstract, Contributions list, Conclusion, subject of a commit message, PR description) to evidence appropriate to it. Empirical claims need measured results or a specific tested scope. Deductive claims need a supporting proof. Descriptions of changes need an inspected diff.
+- Review a proof's definitions, assumptions, use of cited results, and inference steps against the claimed conclusion. Formalization is optional. When using a proof assistant, also check that the formal statement and its assumptions express the written claim.
 - Cut a qualifier that names no metric the work actually reports (e.g. "holistic quality" beside metrics that are all named elsewhere).
-- Scope claims to what was tested ("among the settings we test") instead of stating them as absolutes. A commit message says what changed, never that it is better unless a measurement says so.
+- Scope empirical claims to what was tested ("among the settings we test") instead of stating them as absolutes. A commit message says what changed, never that it is better unless a measurement says so.
 - State what the statistics show and stop there. Mechanistic explanations require data that probes the mechanism.
 - Print the raw p-value beside every adjusted one. A table caption states the sample count behind its entries.
 - A commit message says what changed, specifically. Never "update files".

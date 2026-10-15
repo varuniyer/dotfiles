@@ -23,7 +23,7 @@ Use agents that can read the assigned files and run `psql` and `.venv/bin/python
 - The instruction to be adversarial toward both the reviewer and the paper, and to report what is actually there.
 - For data claims, query the database. Where the data does not exist, say so plainly and name the run that would produce it. Never estimate a number the DB does not hold.
 - Mark the sharpest technical assertion in each cluster and tell the agent to nail that one exactly, quoting both code paths where the claim is a mismatch between two of them.
-- Where `AGENTS.md` records a decision as settled, the question for the agent is whether the paper's written argument is as strong as the repo's internal reasoning, not whether the decision was right.
+- Any explicit review exceptions in the project's `AGENTS.md`, with their stated scope.
 - An instruction to load the `prose` skill, which governs the agent's own writing.
 
 ## Synthesis

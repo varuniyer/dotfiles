@@ -20,7 +20,6 @@ These apply to every language and every surface: application code, SQL, schema d
 - A conditional operation and the primitive it wraps take distinct names. Suffix the caller with what gates it rather than reusing the primitive's own word.
 - Mark the exception, not the default. The common case is bare and the variant carries the mark, and the mark says what differs.
 - Implementation vocabulary stays in the implementation. Words naming where a value sits in some machine do not belong in the description of what it is.
-- A name the project has recorded as settled binds every later edit. The rejected side reads naturally at its own site, so check the record before coining or reviving a name.
 - A column or field of an enum type takes the enum's stem as its name, so `thing_t` sits in `thing`. No name carries a `_kind`, `_type`, or `_family` suffix, which is a second name for what the type already says.
 - In prose, use "type" for a classification.
 
@@ -40,10 +39,7 @@ These apply to every language and every surface: application code, SQL, schema d
 
 ## Comments
 
-- Use comments for semantic clarity. A comment qualifies only when it supplies a fact the code and names leave implicit about what a value represents, what behavior is required, or what condition correctness depends on. The fact must resolve a concrete ambiguity that affects behavior, validity, or correct use.
-- Rationale qualifies when it explains how an implementation choice preserves that meaning, behavior, or condition. Omit comments that only restate operations, narrate implementation steps, or record change history.
-- Explain a field's purpose through its name. Put any necessary comment about the field in the documentation for its containing class, record, or table.
-- Cap a doc comment at 3 lines. A schema object takes one comment of at most 2 lines above the statement creating it, stating what the object holds beyond what its name says. An enum whose members are its definition and a trigger named for what it fires on both earn none.
+For code comments and docstrings, follow the [Code comments and docstrings section](../prose/SKILL.md#code-comments-and-docstrings) of the `prose` skill.
 
 ## Python
 
@@ -77,7 +73,7 @@ These apply to every language and every surface: application code, SQL, schema d
 
 - Assert meaningful invariants or compare results with expectations established independently of the implementation. Do not write assertions that test only constants or reproduce the calculation being tested.
 - Type checkers and linters read past the inside of a string. A query naming a column that moved passes every check and fails on first execution. Run the thing.
-- For a pure refactor, run the old and new implementations with the same inputs and starting state. Capture and diff their output, and compare the returned values, raised errors, and changed files or database rows that the refactor can affect. Report the differences, the cases checked, and any behavior the comparison did not cover.
+- For a pure refactor, run the old and new implementations with the same inputs and starting state. Capture and diff their output, and compare the returned values, raised errors, and changed files or database rows that the refactor can affect. Report the checks run, the current implementation's results, and any behavior left unchecked. Follow the prose skill's [Positive framing section](../prose/SKILL.md#positive-framing) for writing comparisons with previous versions.
 - Put an assertion in every rewrite script, so each substitution matches the count you expect. A silent zero-match is how a rename half-lands.
 - Confirm a surface before calling it. Read a table's columns and types, or a function's signature, before writing the query or the call.
 - Probe a destructive database change inside an explicit `BEGIN`/`ROLLBACK`. A rollback on an autocommit connection does nothing, and a sequence advances across a rollback either way.

@@ -76,10 +76,22 @@ Verification passed for all six skill manifests using Nushell and for `git diff 
 
 ## Decisions on 2026-10-15
 
-The user kept the inlining requirement for single-use names and requested comments as the way to resolve unclear meaning. Comments may explain rationale when it meets the strict definition of semantic clarity in the code skill's Comments section.
+The user kept the inlining requirement for single-use names and requested comments as the way to resolve unclear meaning. Comments may explain rationale when it meets the strict definition of semantic clarity in the prose skill's Code comments and docstrings section.
 
 The user prefers subqueries for SQL inlining, subject to measured performance. The code skill's SQL section holds the canonical rule.
 
 The user requested "option type" to distinguish the type from the value that represents absence. The code skill holds the canonical rule.
 
 The user requested clarifying the prose rules flagged as vague using Joseph M. Williams's discussion in [Style: Toward Clarity and Grace](https://s3.amazonaws.com/arena-attachments/1408171/244bf97521118f6fcbe692b0b98dcc7d.pdf). The clarity and cohesion clarification follows chapter 3, p. 48. The guidance on introducing unfamiliar technical terms follows chapter 4, pp. 73–75. The restrictions on implementation details and Limitations caveats remain user instructions.
+
+The user requested that the prose skill hold the canonical code-comment and docstring rules and that the code skill reference them. This resolves CORE-R01 from the 2026-10-15 review.
+
+The user removed blanket protection for settled choices and names. A review exemption must be an explicit exception in the target project's `AGENTS.md`. Decision records and previous clean checks supply context and evidence without granting an exemption. This resolves FLOW-01 from the 2026-10-15 review.
+
+The user questioned what proof evidence requires and discussed Lean as a possible formalization, without requesting it as a requirement. The Claims section now distinguishes empirical evidence, supporting proofs, and inspected changes. Proof review checks the argument against its claimed conclusion and assumptions. Formalization is optional and includes checking that the formal statement and assumptions match the written claim. Audit refers to the canonical Claims section. This resolves CORE-R04 and the dependent checklist drift FLOW-03 from the 2026-10-15 review.
+
+The user allowed source URLs in comments when applicable. The prose skill's Code comments and docstrings section holds the allowance.
+
+The user clarified that the extra caution about removing or weakening checks applies to non-orphaned checks. Checks orphaned by the requested change follow the code skill's removal rule. An authorized removal may proceed within that scope. This resolves FLOW-02 from the 2026-10-15 review.
+
+The user confines comparisons with previous versions to commit messages. Comments and other prose surfaces describe current behavior. Refactor verification still compares implementations. Its reports state the checks run, current results, and coverage gaps. The code skill's Verification section holds the procedure, and the prose skill's Positive framing section holds the writing rule. This resolves CORE-R02 from the 2026-10-15 review.
