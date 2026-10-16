@@ -89,7 +89,6 @@ $env.config.menus ++= [{
 
 # --- Modules ---
 source ~/.config/nushell/secrets.nu   # private env vars (edit with `hxs`)
-source ~/.config/nushell/kube.nu      # kubectl wrappers (edit with `hxk`)
 
 # --- Config editors (edit, then `exec nu` to reload) ---
 alias reload = exec nu
@@ -120,6 +119,10 @@ alias apc = uvx --from git+https://github.com/acl-org/aclpubcheck aclpubcheck --
 alias kgr = chmod go-r ~/Documents/.config/kube/config
 alias tf = tail -f
 
+def m-interrupted [result: record] {
+  $result.exit_code? in [-2 130] or ($result.debug? != null and $result.debug starts-with "Interrupted {")
+}
+
 # Quote the whole command when it contains a pipeline or quoted arguments.
 def --wrapped m [
   --duration (-d): duration = 1sec
@@ -130,17 +133,25 @@ def --wrapped m [
     error make {msg: 'm: provide a command to run'}
   }
 
-  loop {
+  try {
+    loop {
       let last_run = (date now)
-      let out = ^nu --config $nu.config-path --commands $cmd | complete
+      # The trap covers interrupts while the child loads its config.
+      let out = ^bash -c 'trap "exit 130" INT; nu --config "$1" --commands "$2"' -- $nu.config-path $cmd | complete
+      if (m-interrupted $out) { break }
 
       clear --keep-scrollback
       print $"Running every ($duration) on '(hostname)': `($cmd)`"
       print $out.stdout $out.stderr
       print $"Last run: ($last_run) | Exit code: ($out.exit_code)"
       sleep ($last_run + $duration - (date now))
+    }
+  } catch {|err|
+    if not (m-interrupted $err) { $err.raw }
   }
 }
+
+source ~/.config/nushell/kube.nu      # kubectl wrappers (edit with `hxk`)
 
 # --- Restic (repo from $env.RESTIC_REPOSITORY) ---
 alias re = restic --verbose
@@ -154,7 +165,7 @@ def r [sub: string, extra?: string] {
     _ => (error make {msg: $"r: unknown subcommand '($sub)' — use b, s, p, or f"})
   })
   let args = (if $extra != null { $base | append $extra } else { $base })
-  restic --verbose ...$args
+  re ...$args
 }
 
 # --- Yank files to the tmux clipboard ---
@@ -163,7 +174,7 @@ def yi [] {
 }
 
 # Concat readable (utf-8) files with headers and yank them.
-def yank-files [files: list<string>] {
+def yf [...files: string] {
   let texts = ($files | each {|f|
       let p = ($f | path expand)
       let raw = (open --raw $p | into binary)
@@ -172,8 +183,7 @@ def yank-files [files: list<string>] {
   $texts | str join "\n\n" | yi
   print $"Done! Yanked ($texts | length)/($files | length) files."
 }
-def yf [...files: string] { yank-files $files }
-def yg [] { yank-files (git ls-files | lines | where {|f| ($f | path type) == "file"}) }
+def yg [] { yf ...(git ls-files | lines | where {|f| ($f | path type) == "file"}) }
 
 # Interactive regex replace across git-tracked files.
 def rp [pattern: string, repl: string] {
