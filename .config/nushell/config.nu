@@ -113,6 +113,7 @@ $env.config.hooks.env_change.PWD = ($env.config.hooks.env_change.PWD? | default 
 
 # --- Git ---
 def gpa [] { git push origin main; git push github main }
+def gpo [] { git push origin main }
 
 # --- Utils ---
 alias apc = uvx --from git+https://github.com/acl-org/aclpubcheck aclpubcheck --paper_type long
