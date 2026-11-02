@@ -1,14 +1,10 @@
 ._*
+Applications
+Android
 Logs
 Suggestions
-group.com.apple.*
-*com.apple.*
-com.utmapp.*
-com.yubico.*
-*element*
-*whatsapp*
-*signal*
-Code
+Containers
+Group Containers
 *Cache*
 IntelligencePlatform
 Intents
@@ -16,7 +12,7 @@ Java
 Trial
 pnpm
 .npm
-.pnpm
+.android
 FileProvider
 .venv
 site-packages
@@ -33,7 +29,14 @@ LanguageModeling
 .Trash
 .cache
 .vscode
+packages
 wandb
 __pycache__
 .DS_Store
+.gem
+.gemini
+.docker
+.cargo
+containers
 node_modules
+uv
