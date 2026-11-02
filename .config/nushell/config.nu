@@ -1,9 +1,5 @@
-$env.PATH = [
-    "/Users/varuniyer/.local/bin",
-    "/opt/homebrew/bin",
-    "/opt/homebrew/opt/libpq@17/bin",
-    "/usr/local/bin"
-] ++ $env.PATH
+use std/util "path add"
+path add ~/.local/bin /opt/homebrew/bin /opt/homebrew/opt/libpq@17/bin /usr/local/bin
 $env.LLM_USER_PATH = "/Users/varuniyer/.config/io.datasette.llm"
 $env.EDITOR = "hx"
 $env.VIRTUAL_ENV_DISABLE_PROMPT = true
