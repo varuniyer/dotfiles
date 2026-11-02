@@ -106,7 +106,7 @@ $env.config.hooks.env_change.PWD = ($env.config.hooks.env_change.PWD? | default 
     code: "overlay use .venv/bin/activate.nu"
   }
   {
-    condition: {|before, after| (not ('.venv/bin/activate.nu' | path exists)) and ('activate' in (overlay list | get name)) and (not ($after | str starts-with ($env.VIRTUAL_ENV? | default '/__no_venv__/x' | path dirname))) }
+    condition: {|before, after| (not ('.venv/bin/activate.nu' | path exists)) and ('activate' in (overlay list | where active | get name)) and (not ($after | str starts-with ($env.VIRTUAL_ENV? | default '/__no_venv__/x' | path dirname))) }
     code: "overlay hide activate --keep-env [ PWD ]"
   }
 ]
