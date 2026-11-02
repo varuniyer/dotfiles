@@ -1,11 +1,10 @@
 $env.PATH = [
-    "~/.local/bin",
+    "/Users/varuniyer/.local/bin",
     "/opt/homebrew/bin",
-    # libpq is keg-only, so pg_dump (used by `b`) isn't linked into /opt/homebrew/bin
     "/opt/homebrew/opt/libpq@17/bin",
     "/usr/local/bin"
 ] ++ $env.PATH
-$env.LLM_USER_PATH = "~/.config/io.datasette.llm"
+$env.LLM_USER_PATH = "/Users/varuniyer/.config/io.datasette.llm"
 $env.EDITOR = "hx"
 $env.VIRTUAL_ENV_DISABLE_PROMPT = true
 $env.PROMPT_INDICATOR_VI_INSERT = ""
@@ -46,8 +45,8 @@ $env.config.history = {
 }
 
 # --- Completions (delegate external-command completions to fish) ---
-let fish_completer = {|spans|
-    let results = fish --command $"complete '--do-complete=($spans | str replace --all "'" "\\'" | str join ' ')'"
+let fish_completer = {|place|
+    let results = fish --command $"complete '--do-complete=($place.command | str replace --all "'" "\\'" | str join ' ')'"
     | from tsv --flexible --noheaders --no-infer
     | rename value description
     | update value {|row|
@@ -102,11 +101,19 @@ alias hxl = hx ~/.config/helix/languages.toml
 # __auto_activate_venv). String-form hooks so `overlay use` parses at cd time.
 $env.config.hooks.env_change.PWD = ($env.config.hooks.env_change.PWD? | default []) ++ [
   {
-    condition: {|before, after| ('.venv/bin/activate.nu' | path exists) and (($env.VIRTUAL_ENV? | default '') != ($after | path join '.venv')) }
+    condition: {|before, after|
+      let activation = ($after | path join '.venv/bin/activate.nu')
+      (($env.VIRTUAL_ENV? | default '') != ($after | path join '.venv')) and (
+        try { open --raw $activation | ignore; true } catch { false }
+      )
+    }
     code: "overlay use .venv/bin/activate.nu"
   }
   {
-    condition: {|before, after| (not ('.venv/bin/activate.nu' | path exists)) and ('activate' in (overlay list | get name)) and (not ($after | str starts-with ($env.VIRTUAL_ENV? | default '/__no_venv__/x' | path dirname))) }
+    condition: {|before, after|
+      let root = ($env.VIRTUAL_ENV? | default '/__no_venv__/x' | path dirname)
+      ('activate' in (overlay list | where active | get name)) and ($after != $root) and (not ($after | str starts-with ($root + '/')))
+    }
     code: "overlay hide activate --keep-env [ PWD ]"
   }
 ]
@@ -177,19 +184,7 @@ def u [] {
   brew cleanup --prune=all
   uv tool upgrade --all
   go install golang.org/x/tools/gopls@latest
-}
-
-# --- Backup (ports the `b` function) ---
-# pg_dump the experiments db, mirror the WebDAV remote, then restic-backup $HOME.
-# Runs daily at noon via ~/Library/LaunchAgents/com.user.runb.plist; connection
-# and path env vars (LOCAL_PG, LOCAL_WEBDAV, DUMP_FILE, PG*/RESTIC_*) live in secrets.nu.
-def b [] {
-  mkdir ($env.LOCAL_PG | path expand)
-  mkdir ($env.LOCAL_WEBDAV | path expand)
-
-  pg_dump | gzip | save --raw --force ($env.DUMP_FILE | path expand)
-  rclone sync webdav:/ $"($env.LOCAL_WEBDAV | path expand)/" --metadata -L -v
-  r b
+  rclone selfupdate
 }
 
 # Auto-attach tmux on interactive launch outside tmux (mirrors fish config).
