@@ -1,0 +1,51 @@
+---
+name: paper
+description: Fan out subagents to fact-check reviewer criticisms or claimed issues in the paper against the paper source, the code, and the database. Load whenever I paste review points, referee assertions, or a list of paper problems and ask to verify, validate, rank, or rebut them.
+---
+
+# Verifying paper findings
+
+The input is a set of assertions about the paper, usually a hostile review. Each assertion is a hypothesis about what the paper says, what the code does, or what the data shows. The job is to establish which are true, with evidence, before answering or conceding any of them.
+
+## Partition the assertions
+
+Group them into clusters by the argument they attack, one agent per cluster. Six clusters is the usual shape for a full review. Keep the reviewer's own numbering inside each cluster (1a, 1b, ...) so the synthesis maps back to the review.
+
+Use agents that can read the assigned files and run `psql` and `.venv/bin/python`.
+
+## What each agent prompt carries
+
+- The repo path, an instruction to read `AGENTS.md` first for the layout, and the source locations. The paper source and its PDF take the repository directory's own name, `latex/<repo>.tex` with the appendix merged in and `<repo>.pdf` beside it. The package and the schema are where `AGENTS.md` says. Reach the database through plain `psql -c "..."` with no `-h` or `-d`.
+- Keep the reviewed files read-only. Never edit `latex/custom.bib`. Write reports, verification scripts, and disposable check outputs only in the session scratchpad. Redirect caches there or disable them.
+- Every sub-assertion spelled out as its own question, phrased as what to check rather than what the reviewer said. A reviewer's compression of the paper is not the paper.
+- The verdict scale: CONFIRMED / PARTLY TRUE / FALSE / UNVERIFIABLE, per sub-assertion, with line numbers and verbatim quotes for paper claims and `file:line` for code claims.
+- For a CONFIRMED or FALSE sub-assertion, give one truthful rebuttal sentence, or state that no truthful rebuttal exists. For an UNVERIFIABLE assertion, state what remains unknown and name the check that would settle it. Apply these instructions to the supported, refuted, and unresolved parts of PARTLY TRUE assertions. A rebuttal sentence is material for answering the reviewer, never text destined for the paper.
+- The instruction to be adversarial toward both the reviewer and the paper, and to report what is actually there.
+- For data claims, query the database. Where the data does not exist, say so plainly and name the run that would produce it. Never estimate a number the DB does not hold.
+- Mark the sharpest technical assertion in each cluster and tell the agent to nail that one exactly, quoting both code paths where the claim is a mismatch between two of them.
+- Any explicit review exceptions in the project's `AGENTS.md`, with their stated scope.
+- An instruction to load the `prose` skill, which governs the agent's own writing.
+
+## Synthesis
+
+Judge each assertion's truth before deciding whether it needs an edit. Sort findings by what they demand, not by the reviewer's order. Place the supported, refuted, and unresolved parts of PARTLY TRUE assertions in the corresponding groups:
+
+1. Assertions that are FALSE, with the quote that refutes them. These cost nothing to answer.
+2. Assertions that are true and need no edit or further work, with the reason.
+3. Assertions that are true and fixable in text. These are the edit list.
+4. Assertions that are true and need a run, a measurement, or unwritten code. These are the real gaps, and the ones where the reviewer has force.
+5. Assertions that are UNVERIFIABLE. State what remains unknown and name the check that would settle each.
+
+Before an assertion reaches the edit list, find where the paper already covers its subject. Three dispositions follow, and none of them adds a second detailed statement of a claim.
+
+- The paper states it clearly and correctly. Quote it and place the assertion in group 1 if the quote refutes it, or group 2 if the assertion is true and needs no edit.
+- The paper states it in a shape the reviewer did not expect, asserted where it should be argued, imprecise, overstated against what the work measures, or sitting where the argument does not reach it. Revise the site that already carries it. This is the common case and it is still one detailed statement afterwards.
+- The paper states it nowhere. Now it is an edit candidate, gated by the test below.
+
+A missing statement becomes an edit only when a competent reader of the venue would be misled without it. Disclosures of the obvious never qualify: that a standard protocol is standard, that incomparable numbers were not compared, that a scoped-out method is out of scope, that a stated design choice is a design choice. A reviewer demanding an acknowledgment is making an assertion like any other, and the right disposition for most such demands is "true, obvious, no edit". The paper argues its claims, it does not narrate its innocence.
+
+Keep each detailed claim at one site, even when the reviewer asks for it elsewhere. Abstracts and conclusions may summarize claims developed elsewhere, as the prose skill allows. Reader-path arguments are how repeated detail gets justified, so treat "a reader reaching the table first would not know" as a reason to check the existing statement is right, never as a reason to repeat its detail.
+
+Report where the paper contradicts the code, since that is the finding that outranks everything else in the list.
+
+Then stop. Edits to the paper come as a separate request. When they come, load the `prose` skill first, run `make check` after, and report what it flags. Never propose a Limitations caveat. Raise the concern here instead.
