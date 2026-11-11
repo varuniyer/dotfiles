@@ -16,9 +16,9 @@ The user answered “all five” to these workflow proposals:
 
 For YAML validation, the user instructed: “use nushell not py for yml”.
 
-## Dispositions
+## Outcomes
 
-| Finding | Disposition | Deciding fact |
+| Finding | Outcome | Deciding fact |
 |---|---|---|
 | CORE-01 | APPLIED | The repeated Concision bullet was removed. Positive framing retains the instruction. |
 | CORE-04 | APPLIED | The Claims rule now says “subject of a commit message”. |
@@ -54,9 +54,9 @@ These decisions govern the nine findings in the rule-clarity audit dated 2026-10
 
 The user also instructed that the shared rules should remain independent of the assistant or tool. The README holds the Nushell commands for linking the shared skills into the assistant's skill directory.
 
-## Dispositions on 2026-10-11
+## Outcomes on 2026-10-11
 
-| Finding | Disposition | Deciding fact |
+| Finding | Outcome | Deciding fact |
 |---|---|---|
 | CORE-01 | APPLIED | Necessary field comments belong in the containing class, record, or table's documentation. The limits on comment content and length remain. |
 | CORE-02 | APPLIED | The comparison rule names current behavior and alternatives still under consideration, and omits superseded versions. |
@@ -106,11 +106,11 @@ Shared skill instructions use generic paths and never name a particular project.
 
 The user clarified that two types may both have qualified names and that input and output values are named for what they represent. Code's Naming section holds both instructions. The user's prediction/label example is context-specific. Prose's branch-description rule states its aim concretely, giving a condition directly and permitting consistent repetition of an operation's functional name. Audit follows that wording. These resolve CROSS2-06, CROSS2-01, and CROSS2-02.
 
-## Dispositions for the remaining fifteen clarifications
+## Outcomes for the remaining fifteen clarifications
 
 The user authorized these edits with “ok snd for the 15 use prose rules to fix them”. The canonical wording remains in the skills.
 
-| Finding | Disposition | Deciding fact |
+| Finding | Outcome | Deciding fact |
 |---|---|---|
 | CROSS2-07 | APPLIED | A passage's subject governs implementation vocabulary in documents and chat. Code refers to prose's canonical rule. |
 | CORE2-01 | APPLIED | Single-use inlining covers replaceable definitions and computed intermediates. Parameters and required interface names retain their bindings. Identified external readers count. |

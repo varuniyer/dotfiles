@@ -1,6 +1,6 @@
 ---
 name: fix
-description: Fan out subagents to verify and apply the findings in data/findings.md, ask about the fixes the rules leave open, run the gates, and delete the file once every finding carries a disposition. Load whenever I ask to fix, apply, or work through a findings file.
+description: Fan out subagents to verify and apply the findings in data/findings.md, ask about the fixes the rules leave open, run the gates, and delete the file once every finding carries an outcome. Load whenever I ask to fix, apply, or work through a findings file.
 ---
 
 # Applying a findings file
@@ -53,9 +53,9 @@ A later level reads files an earlier level changed, so line numbers have moved. 
 - The ban on widening a fix. Remove checks orphaned by the requested change. Propose removing or weakening a non-orphaned check or constraint unless the author has already authorized it.
 - The assertion rule for any scripted substitution. Every rewrite script asserts its match count against the number expected. A silent zero-match is how a rename half-lands.
 - The instruction to stop a finding and report it rather than choose, whenever the fix turns out ambiguous once the code is in view. A new question is cheaper than a wrong edit.
-- The disposition scale: APPLIED, DECLINED, or DEFERRED, one per finding, carrying the diff for the first and the reason for the other two.
+- The outcome scale: APPLIED, DECLINED, or DEFERRED, one per finding, carrying the diff for the first and the reason for the other two.
 - An instruction to say what it could not do rather than approximate it.
-- A one-paragraph reply summary. The dispositions belong in the file it writes.
+- A one-paragraph reply summary. The outcomes belong in the file it writes.
 
 ## Verification
 
@@ -75,10 +75,10 @@ Agents surface ambiguities the first pass could not see, since a fix reads diffe
 
 ## Reporting and cleanup
 
-One line per finding: identifier, disposition, and the fact that decided it. Group the declined ones together with their reasons, since those are what the next audit raises again unless the reason lives somewhere durable.
+One line per finding: identifier, outcome, and the fact that decided it. Group the declined ones together with their reasons, since those are what the next audit raises again unless the reason lives somewhere durable.
 
 Record the resolved ambiguities where the project keeps its rulings, before deleting anything. Each answer cost the author a decision, and an unrecorded decision returns as the same question.
 
-Delete `data/findings.md` once every finding carries a disposition and the gates pass. Before deletion, preserve each deferred finding's identifier, unresolved subject, reason for deferral, and required check in a durable project record. Name that destination in the report.
+Delete `data/findings.md` once every finding carries an outcome and the gates pass. Before deletion, preserve each deferred finding's identifier, unresolved subject, reason for deferral, and required check in a durable project record. Name that destination in the report.
 
 Then stop. Committing, pushing, and launching are a separate request.

@@ -36,13 +36,13 @@ Judge each assertion's truth before deciding whether it needs an edit. Sort find
 4. Assertions that are true and need a run, a measurement, or unwritten code. These are the real gaps, and the ones where the reviewer has force.
 5. Assertions that are UNVERIFIABLE. State what remains unknown and name the check that would settle each.
 
-Before an assertion reaches the edit list, find where the paper already covers its subject. Three dispositions follow, and none of them adds a second detailed statement of a claim.
+Before an assertion reaches the edit list, find where the paper already covers its subject. Three cases follow, and none of them adds a second detailed statement of a claim.
 
 - The paper states it clearly and correctly. Quote it and place the assertion in group 1 if the quote refutes it, or group 2 if the assertion is true and needs no edit.
 - The paper states it in a shape the reviewer did not expect, asserted where it should be argued, imprecise, overstated against what the work measures, or sitting where the argument does not reach it. Revise the site that already carries it. This is the common case and it is still one detailed statement afterwards.
 - The paper states it nowhere. Now it is an edit candidate, gated by the test below.
 
-A missing statement becomes an edit only when a competent reader of the venue would be misled without it. Disclosures of the obvious never qualify: that a standard protocol is standard, that incomparable numbers were not compared, that a scoped-out method is out of scope, that a stated design choice is a design choice. A reviewer demanding an acknowledgment is making an assertion like any other, and the right disposition for most such demands is "true, obvious, no edit". The paper argues its claims, it does not narrate its innocence.
+A missing statement becomes an edit only when a competent reader of the venue would be misled without it. Disclosures of the obvious never qualify: that a standard protocol is standard, that incomparable numbers were not compared, that a scoped-out method is out of scope, that a stated design choice is a design choice. A reviewer demanding an acknowledgment is making an assertion like any other, and the right outcome for most such demands is "true, obvious, no edit". The paper argues its claims, it does not narrate its innocence.
 
 Keep each detailed claim at one site, even when the reviewer asks for it elsewhere. Abstracts and conclusions may summarize claims developed elsewhere, as the prose skill allows. Reader-path arguments are how repeated detail gets justified, so treat "a reader reaching the table first would not know" as a reason to check the existing statement is right, never as a reason to repeat its detail.
 
