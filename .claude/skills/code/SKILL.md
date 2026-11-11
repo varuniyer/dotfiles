@@ -16,7 +16,7 @@ These apply to every language and every surface: application code, SQL, schema d
 ## Naming
 
 - One thing carries one name across every surface it crosses, and one name carries one thing. A second name is a defect even when both are apt, because the two drift and nothing raises. Apply the [prose naming caveats](../prose/SKILL.md#naming) for symbol spellings, descriptive phrases, and independent local bindings.
-- Name an operation by what it does and a value by what it represents. Choose data names such as `source_text` and `tokens` instead of literal `input` and `output`. Name a method by how it works, never by its role in a comparison.
+- Name an operation by what it does and a value by what it represents. Choose data names such as `source_text` and `tokens` instead of literal `input` and `output`. A word for a value's geometry, such as `plane`, names neither its purpose nor its contents. Name a method by how it works, never by its role in a comparison.
 - A conditional operation and the primitive it wraps take distinct names. Suffix the caller with what gates it rather than reusing the primitive's own word.
 - Related operations may both have qualified names that express how they differ, such as `search_exact` and `search_approximate`.
 - Follow the [prose vocabulary rule](../prose/SKILL.md#naming) for descriptions of concepts, storage, and execution.
