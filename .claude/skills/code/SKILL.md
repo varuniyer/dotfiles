@@ -53,6 +53,7 @@ For code comments and docstrings, follow the [Code comments and docstrings secti
 
 - The database owns concurrency protection, locking, and atomic multi-step writes, in its own functions and triggers. Correctness must hold for a write typed by hand, with no application code in the way.
 - Writers fail loudly on collision. Never write `ON CONFLICT`.
+- Every byte a query returns leaves the database host, where egress is billed. Filter, join, aggregate, and split text in the database so a query returns only the rows and columns its caller reads. Fetch a large column only for computation the database cannot run, and fetch it once per process, not once per use.
 - Prefer a subquery at the use site for a query referenced once. Keep a single-use CTE only when its SQL semantics are required or representative execution plans and measured runtimes show a benefit.
 - Never use a CTE where a separate view does the same work as fast or faster.
 - Use LATERAL when the inner query returns multiple rows or columns per outer row. Check correlated scalar subqueries in the SELECT list with execution plans and measured runtimes on representative data at expected outer-row counts. Use LATERAL or a CTE when it simplifies redundant work.
