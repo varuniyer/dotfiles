@@ -1,4 +1,9 @@
-$env.PATH = [
+# The root-owned system dirs come first, so a file in the user-writable dirs below cannot shadow
+# a signed Fedora binary like openssl or python3. uniq keeps each dir's first position, which
+# drops the earlier position .bashrc's `brew shellenv` gives Homebrew.
+$env.PATH = ([
+    "/usr/local/bin",
+    "/usr/bin",
     "~/.local/bin",
     "~/.cargo/bin"
     "/home/linuxbrew/.linuxbrew/bin",
