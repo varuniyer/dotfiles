@@ -8,6 +8,10 @@
 !/.claude/skills
 !/.claude/skills/**
 /.claude/skills/synced/
+/.claude/skills/amazon-*/
+/.claude/skills/aws-*/
+/.claude/skills/*-aws/
+/.claude/skills/ocr-document-processing-skill/
 
 !/.config
 /.config/**
