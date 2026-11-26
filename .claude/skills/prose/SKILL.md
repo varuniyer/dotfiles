@@ -64,6 +64,7 @@ Flow is what makes a passage readable, and cohesion is what makes flow.
 ## Punctuation and sentence shape
 
 - No em dashes and no semicolons. Split into sentences, or use a comma or conjunction.
+- Cap a paragraph at 150 words. Split a longer one where its topic shifts.
 - Write short sentences, with one idea each. Use declarative sentences for assertions. Ask questions to obtain information or decisions.
 - Cut rhetorical signposts ("However", "In contrast", "Moreover", "As such", "Crucially"). Keep conjunctions and words needed to state a condition, sequence, or logical relationship.
 - Split long sentences first, then prune. Splitting promotes transition clauses into standalone sentences that assert nothing. Delete those.
